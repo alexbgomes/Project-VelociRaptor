@@ -4,7 +4,7 @@ CPS643 Project
 ---
 
 ## 1 - What is the goal of your project?
-The goal of this project is to create a bullet hell VR game in space which is inspired by the iconic old school game Raptor: Call of The Shadows. 
+The goal of this project is to create a bullet hell VR game in space which is inspired by the iconic old school game [Raptor: Call of The Shadows](https://store.steampowered.com/app/336060/Raptor_Call_of_The_Shadows__2015_Edition/). 
 
 ---
 ## 2 - What type of project are you proposing?
@@ -78,22 +78,22 @@ There needs to be many levels of coding necessary for this project. There needs 
 
 ---
 ## 19 - Where will project assets come from (e.g. model meshes etc) and list some assets
-The majority of project assets will likely come from the Unity Asset Store. A few assets that have been considered are:
-- Star Sparrow Modular Spaceship
-- Skybox Series
-- Federation Corvette F3
-- Alien Ships Pack
-- Quick Outline
-- War FX
-- Beautiful Progress Bar
-- sFuture Targeting
-- Rockets, Missiles, & Bombs
+The majority of project assets will likely come from the [Unity Asset Store](https://assetstore.unity.com/). A few assets that have been considered are:
+- [Star Sparrow Modular Spaceship](https://assetstore.unity.com/packages/3d/vehicles/space/star-sparrow-modular-spaceship-73167)
+- [Skybox Series](https://assetstore.unity.com/packages/2d/textures-materials/sky/skybox-series-free-103633#content)
+- [Federation Corvette F3](https://assetstore.unity.com/packages/3d/vehicles/space/federation-corvette-f3-79860)
+- [Alien Ships Pack](https://assetstore.unity.com/packages/3d/vehicles/space/alien-ships-pack-131137)
+- [Quick Outline](https://assetstore.unity.com/packages/tools/particles-effects/quick-outline-115488)
+- [War FX](https://assetstore.unity.com/packages/vfx/particles/war-fx-5669)
+- [Beautiful Progress Bar](https://assetstore.unity.com/packages/2d/gui/icons/beautiful-progress-bar-free-194904#content)
+- [sFuture Targeting](https://assetstore.unity.com/packages/3d/props/sfuture-targeting-83113#description)
+- [Rockets, Missiles, & Bombs](https://assetstore.unity.com/packages/3d/props/weapons/rockets-missiles-bombs-cartoon-low-poly-pack-73141)
 
 Some texture assets may be found using outside sources such as ambientCG. All of these assets are free to use and at the minimum, free for non-commercial use with accreditation.
 
 ---
 ## 20 - List any external projects/code that may be used and describe how you will incorporate, modify and extend this code
-We may look at a few tutorials on Unity’s official website. No code will be copied but, we may incorporate general concepts that fit our needs. Here, is an example.
+We may look at a few tutorials on [Unity’s official website](https://learn.unity.com/). No code will be copied but, we may incorporate general concepts that fit our needs. [Here](https://learn.unity.com/tutorial/creating-objects#), is an example.
 
 ---
 ## 21 - Include a rough schedule of the work
