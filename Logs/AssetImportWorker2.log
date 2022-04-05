@@ -1,0 +1,254 @@
+Using pre-set license
+Built from '2021.2/staging' branch; Version is '2021.2.18f1 (0c6e675195cf) revision 814695'; Using compiler version '192829333'; Build Type 'Release'
+OS: 'Windows 10  (10.0.19044) 64bit Professional' Language: 'en' Physical Memory: 16333 MB
+BatchMode: 1, IsHumanControllingUs: 0, StartBugReporterOnCrash: 0, Is64bit: 1, IsPro: 1
+
+COMMAND LINE ARGUMENTS:
+C:\Program Files\Unity\Hub\Editor\2021.2.18f1\Editor\Unity.exe
+-adb2
+-batchMode
+-noUpm
+-name
+AssetImportWorker2
+-projectPath
+C:/Users/Alex/Documents/Github/Project-VelociRaptor
+-logFile
+Logs/AssetImportWorker2.log
+-srvPort
+1037
+Successfully changed project path to: C:/Users/Alex/Documents/Github/Project-VelociRaptor
+C:/Users/Alex/Documents/Github/Project-VelociRaptor
+[UnityMemory] Configuration Parameters - Can be set up in boot.config
+    "memorysetup-bucket-allocator-granularity=16"
+    "memorysetup-bucket-allocator-bucket-count=8"
+    "memorysetup-bucket-allocator-block-size=33554432"
+    "memorysetup-bucket-allocator-block-count=8"
+    "memorysetup-main-allocator-block-size=16777216"
+    "memorysetup-thread-allocator-block-size=16777216"
+    "memorysetup-gfx-main-allocator-block-size=16777216"
+    "memorysetup-gfx-thread-allocator-block-size=16777216"
+    "memorysetup-cache-allocator-block-size=4194304"
+    "memorysetup-typetree-allocator-block-size=2097152"
+    "memorysetup-profiler-bucket-allocator-granularity=16"
+    "memorysetup-profiler-bucket-allocator-bucket-count=8"
+    "memorysetup-profiler-bucket-allocator-block-size=33554432"
+    "memorysetup-profiler-bucket-allocator-block-count=8"
+    "memorysetup-profiler-allocator-block-size=16777216"
+    "memorysetup-profiler-editor-allocator-block-size=1048576"
+    "memorysetup-temp-allocator-size-main=16777216"
+    "memorysetup-job-temp-allocator-block-size=2097152"
+    "memorysetup-job-temp-allocator-block-size-background=1048576"
+    "memorysetup-job-temp-allocator-reduction-small-platforms=262144"
+    "memorysetup-temp-allocator-size-background-worker=32768"
+    "memorysetup-temp-allocator-size-job-worker=262144"
+    "memorysetup-temp-allocator-size-preload-manager=33554432"
+    "memorysetup-temp-allocator-size-nav-mesh-worker=65536"
+    "memorysetup-temp-allocator-size-audio-worker=65536"
+    "memorysetup-temp-allocator-size-cloud-worker=32768"
+    "memorysetup-temp-allocator-size-gi-baking-worker=262144"
+    "memorysetup-temp-allocator-size-gfx=262144"
+Refreshing native plugins compatible for Editor in 67.69 ms, found 6 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Initialize engine version: 2021.2.18f1 (0c6e675195cf)
+[Subsystems] Discovering subsystems at path C:/Program Files/Unity/Hub/Editor/2021.2.18f1/Editor/Data/Resources/UnitySubsystems
+[Subsystems] Discovering subsystems at path C:/Users/Alex/Documents/Github/Project-VelociRaptor/Assets
+GfxDevice: creating device client; threaded=0; jobified=0
+Direct3D:
+    Version:  Direct3D 11.0 [level 11.1]
+    Renderer: NVIDIA GeForce RTX 2070 SUPER (ID=0x1e84)
+    Vendor:   NVIDIA
+    VRAM:     8011 MB
+    Driver:   30.0.14.9649
+Initialize mono
+Mono path[0] = 'C:/Program Files/Unity/Hub/Editor/2021.2.18f1/Editor/Data/Managed'
+Mono path[1] = 'C:/Program Files/Unity/Hub/Editor/2021.2.18f1/Editor/Data/MonoBleedingEdge/lib/mono/unityjit-win32'
+Mono config path = 'C:/Program Files/Unity/Hub/Editor/2021.2.18f1/Editor/Data/MonoBleedingEdge/etc'
+Using monoOptions --debugger-agent=transport=dt_socket,embedding=1,server=y,suspend=n,address=127.0.0.1:56272
+Begin MonoManager ReloadAssembly
+Registering precompiled unity dll's ...
+Register platform support module: C:/Program Files/Unity/Hub/Editor/2021.2.18f1/Editor/Data/PlaybackEngines/WindowsStandaloneSupport/UnityEditor.WindowsStandalone.Extensions.dll
+Registered in 0.006085 seconds.
+Native extension for WindowsStandalone target not found
+Refreshing native plugins compatible for Editor in 71.40 ms, found 6 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Mono: successfully reloaded assembly
+- Completed reload, in  0.545 seconds
+Domain Reload Profiling:
+	ReloadAssembly (545ms)
+		BeginReloadAssembly (61ms)
+			ExecutionOrderSort (0ms)
+			DisableScriptedObjects (0ms)
+			BackupInstance (0ms)
+			ReleaseScriptingObjects (0ms)
+			CreateAndSetChildDomain (1ms)
+		EndReloadAssembly (388ms)
+			LoadAssemblies (59ms)
+			RebuildTransferFunctionScriptingTraits (0ms)
+			SetupTypeCache (86ms)
+			ReleaseScriptCaches (0ms)
+			RebuildScriptCaches (23ms)
+			SetupLoadedEditorAssemblies (239ms)
+				LogAssemblyErrors (0ms)
+				InitializePlatformSupportModulesInManaged (7ms)
+				SetLoadedEditorAssemblies (0ms)
+				RefreshPlugins (71ms)
+				BeforeProcessingInitializeOnLoad (1ms)
+				ProcessInitializeOnLoadAttributes (118ms)
+				ProcessInitializeOnLoadMethodAttributes (41ms)
+				AfterProcessingInitializeOnLoad (0ms)
+				EditorAssembliesLoaded (0ms)
+			ExecutionOrderSort2 (0ms)
+			AwakeInstancesAfterBackupRestoration (0ms)
+Platform modules already initialized, skipping
+Registering precompiled user dll's ...
+Registered in 0.005201 seconds.
+Begin MonoManager ReloadAssembly
+Symbol file LoadedFromMemory doesn't match image C:\Users\Alex\Documents\Github\Project-VelociRaptor\Library\PackageCache\com.unity.visualscripting@1.7.6\Editor\VisualScripting.Core\Dependencies\YamlDotNet\Unity.VisualScripting.YamlDotNet.dll
+Symbol file LoadedFromMemory doesn't match image C:\Users\Alex\Documents\Github\Project-VelociRaptor\Library\PackageCache\com.unity.visualscripting@1.7.6\Editor\VisualScripting.Core\Dependencies\DotNetZip\Unity.VisualScripting.IonicZip.dll
+Native extension for WindowsStandalone target not found
+Refreshing native plugins compatible for Editor in 0.62 ms, found 6 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Package Manager log level set to [2]
+Mono: successfully reloaded assembly
+- Completed reload, in  0.866 seconds
+Domain Reload Profiling:
+	ReloadAssembly (867ms)
+		BeginReloadAssembly (91ms)
+			ExecutionOrderSort (0ms)
+			DisableScriptedObjects (5ms)
+			BackupInstance (0ms)
+			ReleaseScriptingObjects (0ms)
+			CreateAndSetChildDomain (16ms)
+		EndReloadAssembly (678ms)
+			LoadAssemblies (67ms)
+			RebuildTransferFunctionScriptingTraits (0ms)
+			SetupTypeCache (234ms)
+			ReleaseScriptCaches (1ms)
+			RebuildScriptCaches (45ms)
+			SetupLoadedEditorAssemblies (295ms)
+				LogAssemblyErrors (0ms)
+				InitializePlatformSupportModulesInManaged (5ms)
+				SetLoadedEditorAssemblies (0ms)
+				RefreshPlugins (1ms)
+				BeforeProcessingInitializeOnLoad (74ms)
+				ProcessInitializeOnLoadAttributes (189ms)
+				ProcessInitializeOnLoadMethodAttributes (18ms)
+				AfterProcessingInitializeOnLoad (7ms)
+				EditorAssembliesLoaded (0ms)
+			ExecutionOrderSort2 (0ms)
+			AwakeInstancesAfterBackupRestoration (6ms)
+Platform modules already initialized, skipping
+========================================================================
+Worker process is ready to serve import requests
+Launched and connected shader compiler UnityShaderCompiler.exe after 0.07 seconds
+Refreshing native plugins compatible for Editor in 1.22 ms, found 6 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Unloading 3549 Unused Serialized files (Serialized files now loaded: 0)
+Unloading 24 unused Assets / (56.0 KB). Loaded Objects now: 4011.
+Memory consumption went from 127.3 MB to 127.2 MB.
+Total: 3.140100 ms (FindLiveObjects: 0.345400 ms CreateObjectMapping: 0.109600 ms MarkObjects: 2.612400 ms  DeleteObjects: 0.071000 ms)
+
+AssetImportParameters requested are different than current active one (requested -> active):
+  custom:video-decoder-ogg-theora: a1e56fd34408186e4bbccfd4996cb3dc -> 
+  custom:container-muxer-webm: aa71ff27fc2769a1b78a27578f13a17b -> 
+  custom:container-demuxer-webm: 4f35f7cbe854078d1ac9338744f61a02 -> 
+  custom:video-encoder-webm-vp8: eb34c28f22e8b96e1ab97ce403110664 -> 
+  custom:audio-encoder-webm-vorbis: bf7c407c2cedff20999df2af8eb42d56 -> 
+  custom:framework-win-MediaFoundation: 216162199b28c13a410421893ffa2e32 -> 
+  custom:container-demuxer-ogg: 62fdf1f143b41e24485cea50d1cbac27 -> 
+  custom:video-decoder-webm-vp8: 9c59270c3fd7afecdb556c50c9e8de78 -> 
+  custom:audio-decoder-ogg-vorbis: bf7c407c2cedff20999df2af8eb42d56 -> 
+========================================================================
+Received Import Request.
+  Time since last request: 25912.318262 seconds.
+  path: Assets/DeepSpaceSkyboxPack/DiverseSpace/Material/DiverseSpaceMaterial.mat
+  artifactKey: Guid(a4be220830e90ea4eb88b48b7fd376ce) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/DeepSpaceSkyboxPack/DiverseSpace/Material/DiverseSpaceMaterial.mat using Guid(a4be220830e90ea4eb88b48b7fd376ce) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'a09aceddba5e8530664dfa3cb6ed6e3d') in 0.260257 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 5.582507 seconds.
+  path: Assets/DeepSpaceSkyboxPack/GalaxyFire/Material/GalaxyFireMaterial.mat
+  artifactKey: Guid(69e10e886d52d20478f9ed5424126be8) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/DeepSpaceSkyboxPack/GalaxyFire/Material/GalaxyFireMaterial.mat using Guid(69e10e886d52d20478f9ed5424126be8) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '93fc3dbc2bc6e6465758cefe004c6fd9') in 0.014064 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 102.010287 seconds.
+  path: Assets/HiRezSpaceshipsCreatorFree/Prefabs/Examples/Example1_Grey.prefab
+  artifactKey: Guid(50d56e9319acd7440a97582160b01520) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/HiRezSpaceshipsCreatorFree/Prefabs/Examples/Example1_Grey.prefab using Guid(50d56e9319acd7440a97582160b01520) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '879ffc98f0ba79a954103b6406787094') in 0.949381 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.000036 seconds.
+  path: Assets/HiRezSpaceshipsCreatorFree/Prefabs/Examples/Example2_Grey.prefab
+  artifactKey: Guid(4ab2fc4928ff37746b26b549008cd60d) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/HiRezSpaceshipsCreatorFree/Prefabs/Examples/Example2_Grey.prefab using Guid(4ab2fc4928ff37746b26b549008cd60d) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '5fd109f9803913069c95b4b4279d8219') in 0.163498 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.000031 seconds.
+  path: Assets/HiRezSpaceshipsCreatorFree/Prefabs/Examples/Example3_Red.prefab
+  artifactKey: Guid(ded92bffdbffb794aa3304b5cf0497df) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/HiRezSpaceshipsCreatorFree/Prefabs/Examples/Example3_Red.prefab using Guid(ded92bffdbffb794aa3304b5cf0497df) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '119b6b5ed5cb0ed116ab7016755898bf') in 0.158795 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 73.099495 seconds.
+  path: Assets/HiRezSpaceshipsCreatorFree/Prefabs/ExamplesNoInterior/Example1NoInterior_Grey.prefab
+  artifactKey: Guid(f18b0c4cd901e7b44a1ad0fc0c36e4e2) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/HiRezSpaceshipsCreatorFree/Prefabs/ExamplesNoInterior/Example1NoInterior_Grey.prefab using Guid(f18b0c4cd901e7b44a1ad0fc0c36e4e2) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '763d46091d628f5c264ef71ab939b1d9') in 0.099209 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.000026 seconds.
+  path: Assets/HiRezSpaceshipsCreatorFree/Prefabs/ExamplesNoInterior/Example2NoInterior_Grey.prefab
+  artifactKey: Guid(2dd421233b21bfb47aac86017eaa5283) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/HiRezSpaceshipsCreatorFree/Prefabs/ExamplesNoInterior/Example2NoInterior_Grey.prefab using Guid(2dd421233b21bfb47aac86017eaa5283) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'dfb5506d8a16e20b14ad492e2c249f65') in 0.093083 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.000025 seconds.
+  path: Assets/HiRezSpaceshipsCreatorFree/Prefabs/ExamplesNoInterior/Example4NoInterior_Grey.prefab
+  artifactKey: Guid(8d4e19a2324d72249a81ab7bcfad91a5) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/HiRezSpaceshipsCreatorFree/Prefabs/ExamplesNoInterior/Example4NoInterior_Grey.prefab using Guid(8d4e19a2324d72249a81ab7bcfad91a5) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '0a607e433a332b38dfde02bc46bc114a') in 0.091708 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.000034 seconds.
+  path: Assets/HiRezSpaceshipsCreatorFree/Prefabs/ExamplesNoInterior/Example3NoInterior_Red.prefab
+  artifactKey: Guid(90d5c4eeecf7d3c41977a39408c2fe00) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/HiRezSpaceshipsCreatorFree/Prefabs/ExamplesNoInterior/Example3NoInterior_Red.prefab using Guid(90d5c4eeecf7d3c41977a39408c2fe00) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '801e85c79e0f1ab996f7dd86b00da5e4') in 0.103748 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 1.438058 seconds.
+  path: Assets/HiRezSpaceshipsCreatorFree/Prefabs/Modules/Big_Launcher.prefab
+  artifactKey: Guid(f90b6d79d3a03de42a5c6e13911b860e) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/HiRezSpaceshipsCreatorFree/Prefabs/Modules/Big_Launcher.prefab using Guid(f90b6d79d3a03de42a5c6e13911b860e) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'a7ce6cc1c906ae1cbe6a53007b218162') in 0.017821 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.000016 seconds.
+  path: Assets/HiRezSpaceshipsCreatorFree/Prefabs/Modules/Wing6.prefab
+  artifactKey: Guid(6b60ceeabc86a6e43a7a918dbbcab26b) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/HiRezSpaceshipsCreatorFree/Prefabs/Modules/Wing6.prefab using Guid(6b60ceeabc86a6e43a7a918dbbcab26b) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '0a543aafb6cf549e6a311bd7654d7bb1') in 0.018537 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.000019 seconds.
+  path: Assets/HiRezSpaceshipsCreatorFree/Prefabs/Modules/Engine1.prefab
+  artifactKey: Guid(46b44d60b1f0369449bf47d8ef9e2fc3) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/HiRezSpaceshipsCreatorFree/Prefabs/Modules/Engine1.prefab using Guid(46b44d60b1f0369449bf47d8ef9e2fc3) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'f9dd63faec4f6a62f33c7c9c4b910f93') in 0.025832 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.000024 seconds.
+  path: Assets/HiRezSpaceshipsCreatorFree/Prefabs/Modules/MainBody2.prefab
+  artifactKey: Guid(1202b1e73ba4e0d468ce4000e6509541) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/HiRezSpaceshipsCreatorFree/Prefabs/Modules/MainBody2.prefab using Guid(1202b1e73ba4e0d468ce4000e6509541) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '00eefbdc5cc171d68307e65db7959d2b') in 0.017667 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.000022 seconds.
+  path: Assets/HiRezSpaceshipsCreatorFree/Prefabs/Modules/Wing6_Mirrored.prefab
+  artifactKey: Guid(7295c3dc82e51b94d851c7608de0fe8c) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/HiRezSpaceshipsCreatorFree/Prefabs/Modules/Wing6_Mirrored.prefab using Guid(7295c3dc82e51b94d851c7608de0fe8c) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'f13f87547ea9303eacb6cd61d0c02fbe') in 0.018568 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.000025 seconds.
+  path: Assets/HiRezSpaceshipsCreatorFree/Prefabs/Modules/Cockpit3_WithoutInterior.prefab
+  artifactKey: Guid(9e7f9a051631c1c4c8eaa31eb406ff68) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/HiRezSpaceshipsCreatorFree/Prefabs/Modules/Cockpit3_WithoutInterior.prefab using Guid(9e7f9a051631c1c4c8eaa31eb406ff68) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'c14359dd9c0b0e47eabb6d9249163eb1') in 0.020330 seconds 
+Editor requested this worker to shutdown with reason: Scaling down because of idle timeout
+AssetImportWorker is now disconnected from the server
+Process exiting
+Exiting without the bug reporter. Application will terminate with return code 0
