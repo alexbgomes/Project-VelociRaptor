@@ -22,7 +22,7 @@ public class Sounds : MonoBehaviour {
         //set the instance variable to this instance for the sake of retrieval/checking
         instance = this;
 
-        DontDestroyOnLoad(GameObject.Find("Sounds"));
+        DontDestroyOnLoad(GameObject.Find("SoundManager"));
     }
 
     public enum Track {
