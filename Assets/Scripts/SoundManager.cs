@@ -1,9 +1,8 @@
-using UnityEngine.UI;
-using UnityEngine.EventSystems;
+using UnityEngine;
 
-public class Sounds : MonoBehaviour {
+public class SoundManager : MonoBehaviour {
 
-    private static Sounds instance;
+    private static SoundManager instance;
 
     AudioSource musicSource;
 

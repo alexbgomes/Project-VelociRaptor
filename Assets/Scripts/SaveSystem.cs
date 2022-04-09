@@ -1,13 +1,14 @@
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
+using UnityEngine;
 
 public static class SaveSystem {
-    const string savePath = Application.persistent + "/sav.dat";
+    static string savePath = Application.persistentDataPath + "/sav.dat";
     public static void Save() {
         BinaryFormatter formatter = new BinaryFormatter();
         using (FileStream stream = new FileStream(savePath, FileMode.Create)) {
-            data = new SaveData();
-            BinaryFormatter.Serialize(stream, data);
+            SaveData data = new SaveData();
+            formatter.Serialize(stream, data);
         }
     }
 
@@ -16,7 +17,7 @@ public static class SaveSystem {
             BinaryFormatter formatter = new BinaryFormatter();
             using (FileStream stream = new FileStream(savePath, FileMode.Open)) {
                 SaveData data = (SaveData)formatter.Deserialize(stream);
-                BinaryFormatter.Serialize(stream, data);
+                formatter.Serialize(stream, data);
                 return data;
             }
         }

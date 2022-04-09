@@ -6,9 +6,9 @@ public class GameManager : MonoBehaviour {
     static int currentLevel = 1;
     public static int CurrentLevel {
         get {
-            return sessionCurrentLevel;
+            return currentLevel;
         } set {
-            sessionCurrentLevel = value;
+            CurrentLevel = value;
             SaveSystem.Save();
         }
     }
@@ -28,7 +28,7 @@ public class GameManager : MonoBehaviour {
         instance = this;
         SaveData saveData = SaveSystem.Load();
 
-        if (!saveData) {
+        if (saveData != null) {
             SaveSystem.Save();
         } else {
             // load data into RAM; basically set GameManager variables from save data
