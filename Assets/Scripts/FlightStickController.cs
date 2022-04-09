@@ -9,7 +9,7 @@ public class FlightStickController : Interactable
     public float leverRightAngle = 45;
     private HingeJoint leverHingeJoint;
     private Vector3 startingEuler;
-    public PlayerController boundPlayerController { get; private set; }
+    public PlayerController boundPlayerController;
 
 
     void Start()
