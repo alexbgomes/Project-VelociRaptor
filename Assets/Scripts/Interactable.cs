@@ -1,26 +1,19 @@
 using System.Collections;
 using UnityEngine;
 
-public class Interactable : MonoBehaviour
-{
+public class Interactable : MonoBehaviour {
     public PlayerController boundPlayerController { get; private set; }
     public bool Exchangeable = true;
 
-    public bool TryBind(PlayerController playerController)
-    {
-        if (playerController.grabbedObject)
-        {
+    public bool TryBind(PlayerController playerController) {
+        if (playerController.grabbedObject) {
             return false;
         }
 
-        if (boundPlayerController)
-        {
-            if (!Exchangeable)
-            {
+        if (boundPlayerController) {
+            if (!Exchangeable) {
                 return false;
-            }
-            else
-            {
+            } else {
                 Unbind();
             }
         }
@@ -28,34 +21,40 @@ public class Interactable : MonoBehaviour
         boundPlayerController = playerController;
         OnInteractionEnter();
 
-        if (!boundPlayerController)
-        {
+        if (!boundPlayerController) {
             return false;
         }
 
         return true;
     }
 
-    public void Unbind()
-    {
+    public void Unbind() {
         OnInteractionExit();
-        if (boundPlayerController.grabbedObject == this)
-        {
+        if (boundPlayerController.grabbedObject == this) {
             boundPlayerController.ReleaseObject();
-        }
-        else
-        {
+        } else {
+            Debug.LogError($"Attempted to unbind {this} while holding {boundPlayerController.grabbedObject}");
         }
         boundPlayerController = null;
     }
 
-    protected IEnumerator SmoothPosition(Vector3 oldPosition, Vector3 newPosition, float delay)
-    {
+    protected IEnumerator SmoothPosition(Vector3 oldPosition, Vector3 newPosition, float delay) {
         float elapsed = 0.0f;
 
-        while (elapsed < delay)
-        {
+        while (elapsed < delay) {
             transform.localPosition = Vector3.Lerp(oldPosition, newPosition, elapsed / delay);
+            elapsed += Time.deltaTime;
+
+            yield return null;
+        }
+        yield return null;
+    }
+
+    protected IEnumerator SmoothRotation(Quaternion oldRotation, Quaternion newRotation, float delay) {
+        float elapsed = 0.0f;
+
+        while (elapsed < delay) {
+            transform.localRotation = Quaternion.Slerp(oldRotation, newRotation, elapsed / delay);
             elapsed += Time.deltaTime;
 
             yield return null;

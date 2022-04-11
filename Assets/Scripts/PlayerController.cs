@@ -2,18 +2,30 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Valve.VR;
+using Valve.VR.InteractionSystem;
 
 public class PlayerController : MonoBehaviour {
-    public SteamVR_Action_Boolean GrabGrip;
-    public SteamVR_Action_Boolean GrabPinch;
+    private SteamVR_Action_Boolean GrabGrip;
+    private SteamVR_Action_Boolean GrabPinch;
     private SteamVR_Behaviour_Pose Pose;
-    public SteamVR_Action_Vibration Haptics;
-    public SteamVR_Input_Sources HandType;
+    private SteamVR_Action_Vibration Haptics;
+    private SteamVR_Input_Sources HandType;
+    [HideInInspector]
     public Interactable grabbedObject;
     private bool pinchPressedDown = false;
 
+    public Vector3 TransformOffsetPosition {
+        get {
+            return transform.position - transform.parent.parent.position;
+        }
+    }
+
     void Awake() {
         Pose = GetComponent<SteamVR_Behaviour_Pose>();
+        GrabGrip = GetComponent<Hand>().grabGripAction;
+        GrabPinch = GetComponent<Hand>().grabPinchAction;
+        Haptics = GetComponent<Hand>().hapticAction;
+        HandType = GetComponent<Hand>().handType;
     }
 
     void Start() {
@@ -36,73 +48,69 @@ public class PlayerController : MonoBehaviour {
     }
 
     void OnPinchDown(SteamVR_Action_Boolean action, SteamVR_Input_Sources source) {
-
+        pinchPressedDown = true;
     }
 
     void OnPinchUp(SteamVR_Action_Boolean action, SteamVR_Input_Sources source) {
-
+        pinchPressedDown = false;
     }
 
-    void OnTriggerEnter(Collider other)
-    {
+    public void GrabObject(Interactable objectToGrab) {
+        if (objectToGrab.TryBind(this)) {
+            grabbedObject = objectToGrab;
+        }
+    }
+
+    public void ReleaseObject() {
+        grabbedObject = null;
+    }
+
+    void OnTriggerEnter(Collider other) {
         Interactable interactable = NewInteractableRigidBody(other);
-        if (!interactable)
-        {
+        if (!interactable) {
             return;
         }
 
         interactable.OnHoverEnter(this);
     }
 
-    void OnTriggerExit(Collider other)
-    {
+    void OnTriggerExit(Collider other) {
         Interactable interactable = NewInteractableRigidBody(other);
-        if (!interactable)
-        {
+        if (!interactable) {
             return;
         }
 
         interactable.OnHoverExit(this);
     }
 
-    void OnTriggerStay(Collider other)
-    {
+    void OnTriggerStay(Collider other) {
         Interactable interactable = NewInteractableRigidBody(other);
-        if (!interactable)
-        {
+        if (!interactable) {
             return;
         }
 
-        if (pinchPressedDown)
-        {
+        if (pinchPressedDown) {
             GrabObject(interactable);
-        }
-        else
-        {
+        } else {
             interactable.OnHoverStay(this);
         }
     }
 
-    Interactable NewInteractableRigidBody(Collider other)
-    {
-        if (!other.attachedRigidbody)
-        {
+    Interactable NewInteractableRigidBody(Collider other) {
+        if (!other.attachedRigidbody) {
             return null;
         }
 
         Interactable interactable = other.attachedRigidbody.GetComponent<Interactable>();
-        if (!interactable)
-        {
+        if (!interactable) {
             return null;
         }
 
-        if (grabbedObject == interactable)
-        {
+        if (grabbedObject == interactable) {
             return null;
         }
         return interactable;
     }
-
 
     public void InvokeHapticPulse(float duration) {
         Haptics.Execute(0.0f, duration, 150.0f, 0.75f, HandType);
@@ -112,21 +120,8 @@ public class PlayerController : MonoBehaviour {
         Haptics.Execute(0.0f, duration, frequency, strength, HandType);
     }
 
-    public void GrabObject(Interactable objectToGrab)
-    {
-        if (objectToGrab.TryBind(this))
-        {
-            grabbedObject = objectToGrab;
-        }
-    }
-    public void ReleaseObject()
-    {
-        grabbedObject = null;
-    }
-
     void Update() {
-        if (!pinchPressedDown && grabbedObject)
-        {
+        if (!pinchPressedDown && grabbedObject) {
             grabbedObject.Unbind();
         }
     }
