@@ -13,6 +13,12 @@ public class GameManager : MonoBehaviour {
         }
     }
 
+    public static float MaxXBoundary {
+        get {
+            return 25.0f;
+        }
+    }
+
     public static GameManager Instance {
         get {
             if (!instance) {
