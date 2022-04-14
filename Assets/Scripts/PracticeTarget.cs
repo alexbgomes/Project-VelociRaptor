@@ -5,11 +5,13 @@ public class PracticeTarget : Enemy {
         maxHealth = 1;
     }
 
-    void OnTriggerEnter(Collider other) {
+    public override void OnTriggerEnter(Collider other) {
+        Debug.Log($"{transform.name} collided with {other.name}");
         GameObject otherGameObject = other.gameObject;
-        if (!otherGameObject) {
+        if (otherGameObject is null) {
             return;
         }
+
 
         if (other.tag == "Bullet") {
             Bullet bullet = other.GetComponent<Bullet>();

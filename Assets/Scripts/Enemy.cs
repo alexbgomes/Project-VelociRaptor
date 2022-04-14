@@ -20,6 +20,10 @@ public class Enemy : MonoBehaviour {
     }
 
     protected virtual void OnDeath(GameObject cause) {
-        Debug.Log($"{this} died by {cause}.");
+        Debug.Log($"{this.name} died by {cause.name}.");
+    }
+
+    public virtual void OnTriggerEnter(Collider other) {
+        Debug.Log($"[ENEMY] {transform.name} collided with {other.name}");
     }
 }

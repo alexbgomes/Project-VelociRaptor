@@ -46,9 +46,6 @@ public class PlayerController : MonoBehaviour {
 
     void OnGripUp(SteamVR_Action_Boolean action, SteamVR_Input_Sources source) {
         gripPressedDown = false;
-        if (grabbedObject is Interactable) {
-            grabbedObject.OnPinchUp();
-        }
     }
 
     void OnPinchDown(SteamVR_Action_Boolean action, SteamVR_Input_Sources source) {
@@ -60,6 +57,9 @@ public class PlayerController : MonoBehaviour {
 
     void OnPinchUp(SteamVR_Action_Boolean action, SteamVR_Input_Sources source) {
         pinchPressedDown = false;
+        if (grabbedObject is Interactable) {
+            grabbedObject.OnPinchUp();
+        }
     }
 
     public void GrabObject(Interactable objectToGrab) {
