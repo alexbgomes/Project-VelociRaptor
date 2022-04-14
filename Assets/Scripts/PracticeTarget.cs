@@ -12,8 +12,8 @@ public class PracticeTarget : Enemy {
         }
 
         if (other.tag == "Bullet") {
-            //Bullet bullet = other.GetComponent<Bullet>();
-            //TakeDamage(bullet.Damage, bullet.Source);
+            Bullet bullet = other.GetComponent<Bullet>();
+            TakeDamage(bullet.damage, bullet.Source);
         }
     }
 

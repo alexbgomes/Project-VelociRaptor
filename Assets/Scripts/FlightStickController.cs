@@ -10,6 +10,9 @@ public class FlightStickController : Interactable {
     private float lerpDelay = 0.05f;
     private Quaternion defaultRotation = Quaternion.Euler(Vector3.zero);
     private bool needsReset = false;
+    private bool firedOnce = false;
+    public GameObject Spaceship;
+    BulletPool bulletPool;
 
     // Value returned between -1 to 1, utilise as a vector. 
     // (E.g. 1) -1 -> max intensity in the left direction
@@ -20,6 +23,10 @@ public class FlightStickController : Interactable {
         get {
             return -value / maxAngle;
         }
+    }
+
+    void Start() {
+        bulletPool = Spaceship.GetComponent<BulletPool>();
     }
 
     void Update() {
@@ -81,4 +88,18 @@ public class FlightStickController : Interactable {
     public override void OnHoverEnter(PlayerController playerController) {
         playerController.InvokeHapticPulse(0.1f);
     }
+
+    public override void OnPinchDown() {
+        if (!firedOnce) {
+            GameObject bulletGameObject = bulletPool.GetNextBullet();
+            Bullet bullet = bulletGameObject.GetComponent<Bullet>();
+            bullet.Incept();
+            firedOnce = true;
+        }
+    }
+
+    public override void OnPinchUp() {
+        firedOnce = false;
+    }
+
 }

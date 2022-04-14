@@ -13,6 +13,7 @@ public class PlayerController : MonoBehaviour {
     [HideInInspector]
     public Interactable grabbedObject;
     private bool pinchPressedDown = false;
+    private bool gripPressedDown = false;
 
     public Vector3 TransformOffsetPosition {
         get {
@@ -40,15 +41,21 @@ public class PlayerController : MonoBehaviour {
     }
 
     void OnGripDown(SteamVR_Action_Boolean action, SteamVR_Input_Sources source) {
-
+        gripPressedDown = true;
     }
 
     void OnGripUp(SteamVR_Action_Boolean action, SteamVR_Input_Sources source) {
-
+        gripPressedDown = false;
+        if (grabbedObject is Interactable) {
+            grabbedObject.OnPinchUp();
+        }
     }
 
     void OnPinchDown(SteamVR_Action_Boolean action, SteamVR_Input_Sources source) {
         pinchPressedDown = true;
+        if (grabbedObject is Interactable) {
+            grabbedObject.OnPinchDown();
+        }
     }
 
     void OnPinchUp(SteamVR_Action_Boolean action, SteamVR_Input_Sources source) {
@@ -89,7 +96,7 @@ public class PlayerController : MonoBehaviour {
             return;
         }
 
-        if (pinchPressedDown) {
+        if (gripPressedDown) {
             GrabObject(interactable);
         } else {
             interactable.OnHoverStay(this);
@@ -121,7 +128,7 @@ public class PlayerController : MonoBehaviour {
     }
 
     void Update() {
-        if (!pinchPressedDown && grabbedObject) {
+        if (!gripPressedDown && grabbedObject) {
             grabbedObject.Unbind();
         }
     }

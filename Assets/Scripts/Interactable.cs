@@ -76,4 +76,8 @@ public class Interactable : MonoBehaviour {
 
     // Called when the controller stays colliding over this object
     public virtual void OnHoverStay(PlayerController playerController) { }
+
+    public virtual void OnPinchDown() { }
+
+    public virtual void OnPinchUp() { }
 }
