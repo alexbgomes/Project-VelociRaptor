@@ -1,21 +1,22 @@
 using UnityEngine;
 
 public class PracticeTarget : Enemy {
-    void Start() {
+    public override void Start() {
         maxHealth = 1;
+        base.Start();
     }
 
     public override void OnTriggerEnter(Collider other) {
-        Debug.Log($"{transform.name} collided with {other.name}");
         GameObject otherGameObject = other.gameObject;
         if (otherGameObject is null) {
             return;
         }
 
 
-        if (other.tag == "Bullet") {
+        if (other.tag == BulletOrigin.PlayerBullet.ToString()) {
             Bullet bullet = other.GetComponent<Bullet>();
             TakeDamage(bullet.damage, bullet.Source);
+            bullet.Expire();
         }
     }
 

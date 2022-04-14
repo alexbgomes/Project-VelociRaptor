@@ -7,8 +7,9 @@ public class Enemy : MonoBehaviour {
         get { return health; }
     }
 
-    void Start() {
+    public virtual void Start() {
         health = maxHealth;
+        tag = "Enemy";
     }
 
     public void TakeDamage(int value, GameObject source) {
@@ -20,10 +21,12 @@ public class Enemy : MonoBehaviour {
     }
 
     protected virtual void OnDeath(GameObject cause) {
+        Collider[] collider = GetComponents<Collider>();
+        foreach (Collider c in collider) {
+            c.enabled = false;
+        }
         Debug.Log($"{this.name} died by {cause.name}.");
     }
 
-    public virtual void OnTriggerEnter(Collider other) {
-        Debug.Log($"[ENEMY] {transform.name} collided with {other.name}");
-    }
+    public virtual void OnTriggerEnter(Collider other) { }
 }

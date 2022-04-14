@@ -42,7 +42,7 @@ public class FlightStickController : Interactable {
                 Unbind();
                 return;
             }
-
+            controllerPosition.y = 1;
             float target = -Mathf.Atan((controllerPosition.y - stickPosition.y) / (controllerPosition.x - stickPosition.x)) * 180 / Mathf.PI;
             
             if (controllerPosition.x >= stickPosition.x) {

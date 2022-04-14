@@ -9,9 +9,10 @@ public class BulletPool : MonoBehaviour {
     public GameObject poolTarget;
     public int poolCount;
     public GameObject spawnSource;
+    public float bulletSpeed = 2.0f;
 
     void Awake() {
-        bulletPoolInstance = this;    
+        bulletPoolInstance = this;   
     }
 
     void Start() {
@@ -25,6 +26,7 @@ public class BulletPool : MonoBehaviour {
 
             Bullet bullet = bulletGameObject.GetComponent<Bullet>();
             bullet.Source = spawnSource;
+            bullet.speed = bulletSpeed;
         }
     }
 
