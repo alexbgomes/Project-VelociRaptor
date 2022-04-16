@@ -12,6 +12,10 @@ public class Enemy : MonoBehaviour {
         get { return health == 0; }
     }
 
+    public bool IsAlive {
+        get { return health != 0; }
+    }
+
     public virtual void Start() {
         health = maxHealth;
         tag = "Enemy";
@@ -33,6 +37,9 @@ public class Enemy : MonoBehaviour {
             c.enabled = false;
         }
         Debug.Log($"{this.name} died by {cause.name}.");
+        List<int> levelScore = GameManager.CurrentLevelScore;
+        levelScore.Add(1);
+        GameManager.CurrentLevelScore = levelScore;
     }
 
     public virtual void Reset() {

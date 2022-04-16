@@ -22,7 +22,11 @@ public class SpaceshipController : MonoBehaviour {
         position.x += rollSpeed * flightStickController.Value;
         position.x = Mathf.Clamp(position.x, -GameManager.MaxXBoundary, GameManager.MaxXBoundary);
 
-        roll.z = maxRollAngle * -flightStickController.Value;
+        if (flightStickController.Value == 0.00f) {
+            roll.z = Mathf.Lerp(roll.z, 0.00f, 1/0.05f * Time.deltaTime);
+        } else {
+            roll.z = maxRollAngle * -flightStickController.Value;
+        }
 
         if (moving) {
             position.z += moveSpeed;    

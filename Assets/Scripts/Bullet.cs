@@ -8,6 +8,7 @@ public class Bullet : MonoBehaviour {
     public float speed = 0.5f;
     public Direction direction = Direction.Outbound;
     public BulletOrigin bulletOrigin;
+    public bool matchDirection = true;
 
     void Start() {
         tag = bulletOrigin.ToString();
@@ -20,6 +21,7 @@ public class Bullet : MonoBehaviour {
     }
 
     void OnEnable() {
+        CancelInvoke();
         Invoke("Expire", timeToLive);
     }
 
@@ -32,10 +34,11 @@ public class Bullet : MonoBehaviour {
         //Debug.Log($"Blaster dims: {blasterSize}");
         // use above to place at the tip of the blaster
         Vector3 position = Source.transform.position;
-        Quaternion rotation = Source.transform.rotation;
-        Debug.Log($"Spawning bullet at: {position}");
         transform.position = position;
-        transform.rotation = rotation;
+        if (matchDirection) {
+            Quaternion rotation = Source.transform.rotation;
+            transform.rotation = rotation;
+        }
         gameObject.SetActive(true);
     }
 }
