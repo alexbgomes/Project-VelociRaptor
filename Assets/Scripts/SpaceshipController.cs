@@ -10,7 +10,7 @@ public class SpaceshipController : MonoBehaviour {
     FlightStickController flightStickController;
     private Vector3 roll;
     private float maxRollAngle = 15.0f;
-    
+
     void Start() {
         flightStickController = flightStick.GetComponent<FlightStickController>();
         roll = transform.eulerAngles;
