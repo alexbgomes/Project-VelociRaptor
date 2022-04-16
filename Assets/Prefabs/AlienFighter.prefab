@@ -60,6 +60,7 @@ GameObject:
   - component: {fileID: 4612771482904906805}
   - component: {fileID: 4612771482904906809}
   - component: {fileID: 4644680434633579607}
+  - component: {fileID: 7094382583550545919}
   m_Layer: 0
   m_Name: AlienFighter
   m_TagString: Untagged
@@ -112,7 +113,6 @@ MeshRenderer:
   m_RendererPriority: 0
   m_Materials:
   - {fileID: 2100000, guid: 1a28d63c1672b9847915a31e7e342324, type: 2}
-  - {fileID: 2100000, guid: 3e7101ee60b046b418bc7a05d385162b, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -197,3 +197,18 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &7094382583550545919
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4613644657306904346}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9501335ead9a1f846a9a98a5bbb91686, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  dissolveTime: 1
+  dissolveMaterial: {fileID: 2100000, guid: f33681be1e1d3a74ab223f44edd48686, type: 2}
+  terminateOnDissolve: 1

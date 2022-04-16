@@ -1,4 +1,3 @@
-using System.Collections;
 using UnityEngine;
 
 public class Alien : Enemy {
@@ -8,15 +7,12 @@ public class Alien : Enemy {
     public bool trackPlayer = true;
     private bool canShoot = true;
     private BulletPool bulletPool;
-    private MeshRenderer meshRenderer;
-    private Material[] materials;
-    public bool TEST = false;
+    DissolveShaderController dissolveShaderController;
     
     public override void Start() {
         maxHealth = 1;
         bulletPool = GetComponent<BulletPool>();
-        meshRenderer = GetComponent<MeshRenderer>();
-        materials = meshRenderer.materials;
+        dissolveShaderController = GetComponent<DissolveShaderController>();
         base.Start();
     }
 
@@ -29,6 +25,7 @@ public class Alien : Enemy {
                 ShootPlayer();
             }
         }
+
     }
 
     public override void OnTriggerEnter(Collider other) {
@@ -48,17 +45,26 @@ public class Alien : Enemy {
     protected override void OnDeath(GameObject cause) {
         base.OnDeath(cause);
 
-        materials = new Material[] { materials[1] };
-        meshRenderer.materials = materials;
-        StartCoroutine(Dissolve(1.0f));
+        StartCoroutine(dissolveShaderController.Dissolve());
     }
 
     void TrackPlayer() {
         Vector3 position = transform.position;
+
         float t = trackingRate * Time.deltaTime;
         t = t * t * (3.0f - 2.0f * t);
         position.x = Mathf.Lerp(position.x, GameManager.Spaceship.transform.position.x, t);
-        transform.position = position;
+
+        Collider collider = GetComponent<Collider>();
+        float radius = collider.bounds.size.x;
+        int layerFilter = ~(1 << LayerMask.GetMask("Ignore Raycast")); // all layers excluding "Ignore Raycast"
+
+        collider.enabled = false;
+        if (!Physics.CheckSphere(position, radius, layerFilter)) {
+            transform.position = position;
+        }
+        collider.enabled = true;
+
     }
 
     void ShootPlayer() {
@@ -79,23 +85,4 @@ public class Alien : Enemy {
         canShoot = true;
     }
 
-    IEnumerator Dissolve(float delay) {
-        float elapsed = 0.0f;
-
-        float value = 0.0f;
-        materials[0].SetFloat("_Cutoff", value);
-        meshRenderer.materials = materials;
-        while (elapsed < delay) {
-            value = elapsed / delay;
-            materials[0].SetFloat("_Cutoff", value);
-            meshRenderer.materials = materials;
-            elapsed += Time.deltaTime;
-
-            yield return null;
-        }
-        materials[0].SetFloat("_Cutoff", 1.0f);
-        meshRenderer.materials = materials;
-        gameObject.SetActive(false);
-        yield return null;
-    }
 }

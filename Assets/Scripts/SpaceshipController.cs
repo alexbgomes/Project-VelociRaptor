@@ -10,6 +10,11 @@ public class SpaceshipController : MonoBehaviour {
     FlightStickController flightStickController;
     private Vector3 roll;
     private float maxRollAngle = 15.0f;
+    int health;
+    public int maxHealth;
+    public int HP {
+        get { return health; }
+    }
     
     void Start() {
         flightStickController = flightStick.GetComponent<FlightStickController>();
@@ -34,5 +39,35 @@ public class SpaceshipController : MonoBehaviour {
 
         transform.position = position;
         transform.localRotation = Quaternion.Euler(roll);
+    }
+
+    void OnTriggerEnter(Collider other) {
+        GameObject otherGameObject = other.gameObject;
+        if (otherGameObject is null) {
+            return;
+        }
+
+
+        if (other.tag == BulletOrigin.EnemyBullet.ToString()) {
+            Bullet bullet = other.GetComponent<Bullet>();
+            TakeDamage(bullet.damage, bullet.Source);
+            bullet.Expire();
+        }
+    }
+
+    public void TakeDamage(int value, GameObject source) {
+        health -= value;
+        health = Mathf.Clamp(health, 0, maxHealth);
+        if (health == 0) {
+            OnDeath(source);
+        }
+    }
+
+    protected virtual void OnDeath(GameObject cause) {
+        Collider[] collider = GetComponents<Collider>();
+        foreach (Collider c in collider) {
+            c.enabled = false;
+        }
+        Debug.Log($"You died by {cause.name}.");
     }
 }
