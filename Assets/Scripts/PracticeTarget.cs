@@ -4,7 +4,7 @@ public class PracticeTarget : Enemy {
     public bool CanReset = true;
     private Transform LegFX;
     public override void Start() {
-        maxHealth = 1;
+        MaxHP = 1;
         LegFX = transform.Find("Leg FX");
         base.Start();
     }

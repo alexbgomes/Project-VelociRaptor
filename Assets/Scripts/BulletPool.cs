@@ -4,7 +4,7 @@ using UnityEngine;
 public class BulletPool : MonoBehaviour {
     [HideInInspector]
     public static BulletPool bulletPoolInstance;
-    //[HideInInspector]
+    [HideInInspector]
     public List<GameObject> pooledBullets;
     public GameObject poolTarget;
     public int poolCount;
@@ -42,5 +42,14 @@ public class BulletPool : MonoBehaviour {
         }
 
         return null;
+    }
+
+    public void DestroyPool() {
+        for (int i = 0; i < poolCount; i++) {
+            Destroy(pooledBullets[i]);
+        }
+        pooledBullets = new List<GameObject>();
+        poolCount = 0;
+        spawnSource = null;
     }
 }

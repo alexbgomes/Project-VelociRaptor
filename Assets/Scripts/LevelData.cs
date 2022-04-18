@@ -10,7 +10,7 @@ public static class LevelData {
 
     private static List<int> scores = new List<int>(){
         5,
-        999
+        9999
     };
 
     /** This is expected to be 1-index */

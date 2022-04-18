@@ -3,9 +3,20 @@ using UnityEngine;
 
 public class Enemy : MonoBehaviour {
     int health;
-    protected int maxHealth;
+    int maxHealth;
+    private List<GameObject> ManagedEnemies;
+    private List<int> ManagedLevelScore;
+    private int scoreValue;
     public int HP {
         get { return health; }
+    }
+
+    public int MaxHP {
+        get { 
+            return maxHealth; 
+        } set {
+            maxHealth = value;
+        }
     }
 
     public bool IsDead {
@@ -16,11 +27,20 @@ public class Enemy : MonoBehaviour {
         get { return health != 0; }
     }
 
+    public int ScoreValue {
+        get {
+            return scoreValue;
+        } set {
+            scoreValue = value;
+        }
+    }
+
     public virtual void Start() {
         health = maxHealth;
         tag = "Enemy";
-        List<GameObject> enemies = GameManager.EnemyGameObjects;
-        enemies.Add(gameObject);
+        ManagedEnemies = GameManager.EnemyGameObjects;
+        ManagedEnemies.Add(gameObject);
+        ManagedLevelScore = GameManager.CurrentLevelScore;
     }
 
     public void TakeDamage(int value, GameObject source) {
@@ -36,10 +56,10 @@ public class Enemy : MonoBehaviour {
         foreach (Collider c in collider) {
             c.enabled = false;
         }
-        Debug.Log($"{this.name} died by {cause.name}.");
-        List<int> levelScore = GameManager.CurrentLevelScore;
-        levelScore.Add(1);
-        GameManager.CurrentLevelScore = levelScore;
+        Debug.Log($"{name} died by {cause.name}.");
+        ManagedLevelScore.Add(scoreValue);
+        //GameManager.CurrentLevelScore = ManagedLevelScore;
+        ManagedEnemies.Remove(gameObject); // update gm
     }
 
     public virtual void Reset() {

@@ -111,7 +111,7 @@ public class GameManager : MonoBehaviour {
                 }
             }
         }
-        if (!GameManager.LevelQueued && GameManager.CurrentLevelScore.Sum() > LevelData.getScore(CurrentLevel)) {
+        if (!GameManager.LevelQueued && GameManager.CurrentLevelScore.Sum() >= LevelData.getScore(CurrentLevel)) {
             GameManager.LevelQueued = true;
             Debug.Log("Level Passed!");
             Invoke("NextScene", 5.0f);

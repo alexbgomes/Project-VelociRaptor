@@ -30,6 +30,8 @@ public class DissolveShaderController : MonoBehaviour {
         materials[0].SetFloat("_Cutoff", 1.0f);
         meshRenderer.materials = materials;
         if (terminateOnDissolve) {
+            Destroy(gameObject);
+        } else {
             gameObject.SetActive(false);
         }
         yield return null;

@@ -4678,7 +4678,7 @@ MonoBehaviour:
   rollSpeed: 0.5
   moving: 0
   flightStick: {fileID: 1136378883}
-  maxHealth: 0
+  maxHealth: 100
 --- !u!4 &1229594207
 Transform:
   m_ObjectHideFlags: 0

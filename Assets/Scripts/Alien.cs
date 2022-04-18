@@ -11,7 +11,8 @@ public class Alien : Enemy {
     public bool TEST = false;
     
     public override void Start() {
-        maxHealth = 1;
+        MaxHP = 1;
+        ScoreValue = 100;
         bulletPool = GetComponent<BulletPool>();
         dissolveShaderController = GetComponent<DissolveShaderController>();
         base.Start();
@@ -49,7 +50,7 @@ public class Alien : Enemy {
 
     protected override void OnDeath(GameObject cause) {
         base.OnDeath(cause);
-
+        bulletPool.DestroyPool();
         StartCoroutine(dissolveShaderController.Dissolve());
     }
 

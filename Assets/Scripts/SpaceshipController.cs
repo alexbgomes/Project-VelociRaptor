@@ -17,6 +17,7 @@ public class SpaceshipController : MonoBehaviour {
     }
     
     void Start() {
+        health = maxHealth;
         flightStickController = flightStick.GetComponent<FlightStickController>();
         roll = transform.eulerAngles;
     }
