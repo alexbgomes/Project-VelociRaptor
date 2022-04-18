@@ -9,6 +9,7 @@ public class SpaceshipController : MonoBehaviour {
     public GameObject flightStick;
     FlightStickController flightStickController;
     private Vector3 roll;
+    private Vector3 pitch;
     private float maxRollAngle = 15.0f;
     int health;
     public int maxHealth;
@@ -20,18 +21,19 @@ public class SpaceshipController : MonoBehaviour {
         health = maxHealth;
         flightStickController = flightStick.GetComponent<FlightStickController>();
         roll = transform.eulerAngles;
+        pitch = transform.eulerAngles;
     }
 
     void Update() {
         // Movement
         Vector3 position = transform.position;
-        position.x += rollSpeed * flightStickController.Value;
+        position.x += rollSpeed * flightStickController.Value.x;
         position.x = Mathf.Clamp(position.x, -GameManager.MaxXBoundary, GameManager.MaxXBoundary);
 
-        if (flightStickController.Value == 0.00f) {
+        if (flightStickController.Value.x == 0.00f) {
             roll.z = Mathf.Lerp(roll.z, 0.00f, 1/0.05f * Time.deltaTime);
         } else {
-            roll.z = maxRollAngle * -flightStickController.Value;
+            roll.z = maxRollAngle * -flightStickController.Value.x;
         }
 
         if (moving) {
@@ -39,7 +41,9 @@ public class SpaceshipController : MonoBehaviour {
         }
 
         transform.position = position;
-        transform.localRotation = Quaternion.Euler(roll);
+        //transform.localRotation = Quaternion.Euler(roll);
+        transform.Rotate(roll, Space.World);
+        //transform.Rotate(pitch, Space.World);
     }
 
     void OnTriggerEnter(Collider other) {
