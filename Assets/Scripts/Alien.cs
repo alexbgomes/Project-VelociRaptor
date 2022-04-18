@@ -2,12 +2,13 @@ using UnityEngine;
 
 public class Alien : Enemy {
     public float trackingRate = 6.0f;
-    public float shootingRange = 3.0f;
+    public float shootingRange = 50.0f;
     public float fireRate = 2.0f;
     public bool trackPlayer = true;
     private bool canShoot = true;
     private BulletPool bulletPool;
     DissolveShaderController dissolveShaderController;
+    public bool TEST = false;
     
     public override void Start() {
         maxHealth = 1;
@@ -24,6 +25,10 @@ public class Alien : Enemy {
             if (canShoot) {
                 ShootPlayer();
             }
+        }
+
+        if (IsAlive && TEST) {
+            TakeDamage(9999, GameManager.Instance.gameObject);
         }
 
     }
@@ -55,6 +60,7 @@ public class Alien : Enemy {
         t = t * t * (3.0f - 2.0f * t);
         position.x = Mathf.Lerp(position.x, GameManager.Spaceship.transform.position.x, t);
 
+        // Prevent enemies from going inside each other
         Collider collider = GetComponent<Collider>();
         float radius = collider.bounds.size.x;
         int layerFilter = ~(1 << LayerMask.GetMask("Ignore Raycast")); // all layers excluding "Ignore Raycast"
@@ -69,7 +75,18 @@ public class Alien : Enemy {
 
     void ShootPlayer() {
         Vector3 position = transform.position;
-        if (Vector3.Distance(Vector3.forward * position.x, Vector3.forward * GameManager.Spaceship.transform.position.x) <= shootingRange) {
+        float distanceBetween = Mathf.Abs(position.z - GameManager.Spaceship.transform.position.z);
+        if (distanceBetween <= shootingRange) {
+            // Check if another enemy is in the way, if so, return
+            Collider collider = GetComponent<Collider>();
+            float rayWidth = collider.bounds.size.x;
+            RaycastHit hit;
+            if (Physics.SphereCast(position, rayWidth, Vector3.back, out hit, distanceBetween)) {
+                if (hit.transform.tag == "Enemy") {
+                    return;
+                }
+            }
+
             GameObject bulletObject = bulletPool.GetNextBullet();
             if (bulletPool is null) {
                 return;
