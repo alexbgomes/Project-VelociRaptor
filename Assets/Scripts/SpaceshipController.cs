@@ -108,7 +108,7 @@ public class SpaceshipController : MonoBehaviour {
     }
 
     public void ShieldGate(float duration) {
-        shieldGameObject.SetActive(true);
+        Debug.Log("Your shield broke! You will start taking health damage after 1s.");
         invulnerable = true;
         StartCoroutine(SetVulnerableAfter(shieldGateDuration));
     }

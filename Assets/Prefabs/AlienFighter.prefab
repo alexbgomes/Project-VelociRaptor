@@ -163,7 +163,7 @@ MonoBehaviour:
   shootingRange: 50
   fireRate: 2
   trackPlayer: 1
-  FUCK: 0
+  TEST: 0
 --- !u!114 &4612771482904906809
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -180,7 +180,8 @@ MonoBehaviour:
   poolTarget: {fileID: 15369895981501399, guid: 7545762c6e6896c46a159577c54dc396, type: 3}
   poolCount: 3
   spawnSource: {fileID: 4612771481280503527}
-  bulletSpeed: 0.05
+  bulletSpeed: 0.5
+  bulletDamage: 2
 --- !u!54 &4644680434633579607
 Rigidbody:
   m_ObjectHideFlags: 0

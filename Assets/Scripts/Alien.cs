@@ -8,7 +8,6 @@ public class Alien : Enemy {
     private bool canShoot = true;
     private BulletPool bulletPool;
     DissolveShaderController dissolveShaderController;
-    public bool TEST = false;
     
     public override void Start() {
         MaxHP = 1;
@@ -27,11 +26,6 @@ public class Alien : Enemy {
                 ShootPlayer();
             }
         }
-
-        if (IsAlive && TEST) {
-            TakeDamage(9999, GameManager.Instance.gameObject);
-        }
-
     }
 
     public override void OnTriggerEnter(Collider other) {
