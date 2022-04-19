@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class SpaceshipController : MonoBehaviour {
@@ -10,8 +8,9 @@ public class SpaceshipController : MonoBehaviour {
     FlightStickController flightStickController;
     private Vector3 roll;
     private Vector3 pitch;
-    private float maxRollAngle = 15.0f;
-
+    private Vector3 rollPitch;
+    private float maxRollAngle = 20.0f;
+    private float maxPitchAngle = 15.0f;
     int health;
     public int maxHealth;
     public int HP {
@@ -23,18 +22,29 @@ public class SpaceshipController : MonoBehaviour {
         flightStickController = flightStick.GetComponent<FlightStickController>();
         roll = transform.eulerAngles;
         pitch = transform.eulerAngles;
+        rollPitch = transform.eulerAngles;
     }
 
     void Update() {
         // Movement
         Vector3 position = transform.position;
-        position.x += rollSpeed * flightStickController.Value.x;
+        
+        position.x += rollSpeed * flightStickController.Value.X;
         position.x = Mathf.Clamp(position.x, -GameManager.MaxXBoundary, GameManager.MaxXBoundary);
 
-        if (flightStickController.Value.x == 0.00f) {
-            roll.z = Mathf.Lerp(roll.z, 0.00f, 1/0.05f * Time.deltaTime);
+        position.y += rollSpeed * flightStickController.Value.Y;
+        position.y = Mathf.Clamp(position.y, -GameManager.MaxXBoundary, GameManager.MaxXBoundary);
+
+        if (flightStickController.Value.X == 0.00f) {
+            rollPitch.z = Mathf.Lerp(rollPitch.z, 0.00f, 1 / 0.05f * Time.deltaTime);
         } else {
-            roll.z = maxRollAngle * -flightStickController.Value.x;
+            rollPitch.z = maxRollAngle * -flightStickController.Value.X;
+        }
+
+        if (flightStickController.Value.Y == 0.00f) {
+            rollPitch.x = Mathf.Lerp(rollPitch.x, 0.00f, 1 / 0.05f * Time.deltaTime);
+        } else {
+            rollPitch.x = maxPitchAngle * -flightStickController.Value.Y;
         }
 
         if (moving) {
@@ -42,9 +52,7 @@ public class SpaceshipController : MonoBehaviour {
         }
 
         transform.position = position;
-        //transform.localRotation = Quaternion.Euler(roll);
-        transform.Rotate(roll, Space.World);
-        //transform.Rotate(pitch, Space.World);
+        transform.localRotation = Quaternion.Euler(rollPitch);
     }
 
     void OnTriggerEnter(Collider other) {
