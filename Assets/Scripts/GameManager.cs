@@ -64,13 +64,13 @@ public class GameManager : MonoBehaviour {
 
     public static float MaxXBoundary {
         get {
-            return 25.0f;
+            return 150.0f;
         }
     }
 
     public static float MaxYBoundary {
         get {
-            return 25.0f;
+            return 35.0f;
         }
     }
 
