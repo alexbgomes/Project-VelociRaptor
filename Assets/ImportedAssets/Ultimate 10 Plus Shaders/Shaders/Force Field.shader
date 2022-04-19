@@ -74,6 +74,7 @@ Shader "Ultimate 10+ Shaders/Force Field"
                 float4 vertex : POSITION;
                 float2 uv : TEXCOORD0;
                 fixed3 normal : NORMAL;
+                UNITY_VERTEX_INPUT_INSTANCE_ID
             };
 
             struct v2f
@@ -81,6 +82,7 @@ Shader "Ultimate 10+ Shaders/Force Field"
                 float2 uv : TEXCOORD0;
                 float rim : TEXCOORD1;
                 float4 position : SV_POSITION;
+                UNITY_VERTEX_OUTPUT_STEREO
             };
 
             sampler2D _MainTex;
@@ -102,7 +104,9 @@ Shader "Ultimate 10+ Shaders/Force Field"
             v2f vert (appdata vert)
             {
                 v2f output;
-
+                UNITY_SETUP_INSTANCE_ID(vert);
+                UNITY_INITIALIZE_OUTPUT(v2f, output)
+                UNITY_INITIALIZE_VERTEX_OUTPUT_STEREO(output);
                 output.position = UnityObjectToClipPos(vert.vertex);
                 output.uv = TRANSFORM_TEX(vert.uv, _MainTex);
 
@@ -117,6 +121,7 @@ Shader "Ultimate 10+ Shaders/Force Field"
             fixed4 pixel;
             fixed4 frag (v2f input) : SV_Target
             {
+                UNITY_SETUP_STEREO_EYE_INDEX_POST_VERTEX(input);
                 pixel = tex2D(_MainTex, input.uv) * _Color * pow(_FresnelPower, input.rim);
                 pixel = lerp(0, pixel, input.rim);
                 
