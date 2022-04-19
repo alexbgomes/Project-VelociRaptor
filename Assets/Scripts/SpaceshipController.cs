@@ -1,3 +1,4 @@
+using RengeGames.HealthBars;
 using System.Collections;
 using UnityEngine;
 
@@ -26,6 +27,9 @@ public class SpaceshipController : MonoBehaviour {
     }
     public GameObject shieldGameObject;
     private PlayerShieldShaderController playerShieldShaderController;
+    public GameObject interiorParentGameObject;
+    private UltimateCircularHealthBar healthBar;
+    private UltimateCircularHealthBar shieldBar;
     
     void Start() {
         health = maxHealth;
@@ -37,6 +41,15 @@ public class SpaceshipController : MonoBehaviour {
         flightStickController = flightStick.GetComponent<FlightStickController>();
         playerShieldShaderController = shieldGameObject.GetComponent<PlayerShieldShaderController>();
         playerShieldShaderController.alphaDuration = shieldGateDuration;
+
+        shieldBar = interiorParentGameObject.transform
+                        .Find("CockpitEquipments_Gauge1/CockpitEquipments_Gauge1-Screen/SP_Canvas/RadialSegmentedHealthBarImage")
+                        .GetComponent<UltimateCircularHealthBar>();
+        shieldBar.SetSegmentCount(maxShield);
+        healthBar = interiorParentGameObject.transform
+                        .Find("CockpitEquipments_Gauge2/CockpitEquipments_Gauge2-Screen/HP_Canvas/RadialSegmentedHealthBarImage")
+                        .GetComponent<UltimateCircularHealthBar>();
+        healthBar.SetSegmentCount(maxHealth);
     }
 
     void Update() {
@@ -93,7 +106,9 @@ public class SpaceshipController : MonoBehaviour {
     public void TakeHealthDamage(int value, GameObject source) {
         health -= value;
         health = Mathf.Clamp(health, 0, maxHealth);
+        StartCoroutine(LerpHealthBarOver(maxHealth - health, 0.5f));
         if (health == 0) {
+            healthBar.RemovedSegments++; // push it over so there is no residual line
             OnDeath(source);
         }
     }
@@ -101,7 +116,9 @@ public class SpaceshipController : MonoBehaviour {
     public void TakeShieldDamage(int value, GameObject source) {
         shield -= value;
         shield = Mathf.Clamp(shield, 0, maxShield);
+        StartCoroutine(LerpHShieldBarOver(maxShield - shield, 0.5f));
         if (shield == 0) {
+            shieldBar.RemovedSegments++;
             ShieldGate(1.0f);
             StartCoroutine(playerShieldShaderController.Break());
         }
@@ -124,6 +141,32 @@ public class SpaceshipController : MonoBehaviour {
     public IEnumerator SetVulnerableAfter(float duration) {
         yield return new WaitForSeconds(duration);
         invulnerable = false;
+        yield return null;
+    }
+
+    public IEnumerator LerpHShieldBarOver(float targetValue, float duration) {
+        float elapsed = 0.0f;
+
+        while (elapsed < duration) {
+            shieldBar.RemovedSegments = Mathf.Lerp(shieldBar.RemovedSegments, targetValue, elapsed / duration);
+            elapsed += Time.deltaTime;
+
+            yield return null;
+        }
+        shieldBar.RemovedSegments = targetValue;
+        yield return null;
+    }
+
+    public IEnumerator LerpHealthBarOver(float targetValue, float duration) {
+        float elapsed = 0.0f;
+
+        while (elapsed < duration) {
+            healthBar.RemovedSegments = Mathf.Lerp(healthBar.RemovedSegments, targetValue, elapsed / duration);
+            elapsed += Time.deltaTime;
+
+            yield return null;
+        }
+        healthBar.RemovedSegments = targetValue;
         yield return null;
     }
 }
