@@ -33,7 +33,7 @@ public class SpaceshipController : MonoBehaviour {
         position.x = Mathf.Clamp(position.x, -GameManager.MaxXBoundary, GameManager.MaxXBoundary);
 
         position.y += rollSpeed * flightStickController.Value.Y;
-        position.y = Mathf.Clamp(position.y, -GameManager.MaxXBoundary, GameManager.MaxXBoundary);
+        position.y = Mathf.Clamp(position.y, -GameManager.MaxYBoundary, GameManager.MaxYBoundary);
 
         if (flightStickController.Value.X == 0.00f) {
             rollPitch.z = Mathf.Lerp(rollPitch.z, 0.00f, 1 / 0.05f * Time.deltaTime);
