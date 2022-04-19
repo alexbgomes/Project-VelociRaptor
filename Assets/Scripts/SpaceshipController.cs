@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 public class SpaceshipController : MonoBehaviour {
@@ -11,14 +12,22 @@ public class SpaceshipController : MonoBehaviour {
     private Vector3 rollPitch;
     private float maxRollAngle = 20.0f;
     private float maxPitchAngle = 15.0f;
+    public bool invulnerable = false;
     int health;
     public int maxHealth;
     public int HP {
         get { return health; }
     }
+    int shield;
+    public int maxShield;
+    public float shieldGateDuration = 1.0f;
+    public int SP {
+        get { return shield; }
+    }
     
     void Start() {
         health = maxHealth;
+        shield = maxShield;
         flightStickController = flightStick.GetComponent<FlightStickController>();
         roll = transform.eulerAngles;
         pitch = transform.eulerAngles;
@@ -26,7 +35,12 @@ public class SpaceshipController : MonoBehaviour {
     }
 
     void Update() {
-        // Movement
+        UpdateMovement();
+
+
+    }
+
+    void UpdateMovement() {
         Vector3 position = transform.position;
         
         position.x += rollSpeed * flightStickController.Value.X;
@@ -64,17 +78,35 @@ public class SpaceshipController : MonoBehaviour {
 
         if (other.tag == BulletOrigin.EnemyBullet.ToString()) {
             Bullet bullet = other.GetComponent<Bullet>();
-            TakeDamage(bullet.damage, bullet.Source);
+            if (shield == 0) {
+                TakeHealthDamage(bullet.damage, bullet.Source);
+            } else {
+                TakeShieldDamage(bullet.damage, bullet.Source);
+            }
             bullet.Expire();
         }
     }
 
-    public void TakeDamage(int value, GameObject source) {
+    public void TakeHealthDamage(int value, GameObject source) {
         health -= value;
         health = Mathf.Clamp(health, 0, maxHealth);
         if (health == 0) {
             OnDeath(source);
         }
+    }
+
+    public void TakeShieldDamage(int value, GameObject source) {
+        shield -= value;
+        shield = Mathf.Clamp(shield, 0, maxShield);
+        if (shield == 0) {
+            ShieldGate(1.0f);
+        }
+    }
+
+    public void ShieldGate(float duration) {
+        // play animation for shield break
+        // invoke ienumerator
+        SetVulnerableAfter(shieldGateDuration);
     }
 
     protected virtual void OnDeath(GameObject cause) {
@@ -83,5 +115,11 @@ public class SpaceshipController : MonoBehaviour {
             c.enabled = false;
         }
         Debug.Log($"You died by {cause.name}.");
+    }
+
+    public IEnumerator SetVulnerableAfter(float duration) {
+        yield return new WaitForSeconds(duration);
+        invulnerable = false;
+        yield return null;
     }
 }
