@@ -10,6 +10,7 @@ public class SpaceshipController : MonoBehaviour {
     FlightStickController flightStickController;
     private Vector3 roll;
     private float maxRollAngle = 15.0f;
+
     int health;
     public int maxHealth;
     public int HP {
