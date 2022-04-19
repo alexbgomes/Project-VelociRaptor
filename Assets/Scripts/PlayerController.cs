@@ -127,6 +127,10 @@ public class PlayerController : MonoBehaviour {
         Haptics.Execute(0.0f, duration, frequency, strength, HandType);
     }
 
+    public void InvokeStrongHapticPulse(float duration) {
+        Haptics.Execute(0.0f, duration, 150.0f, 1.0f, HandType);
+    }
+
     void Update() {
         if (!gripPressedDown && grabbedObject) {
             grabbedObject.Unbind();
