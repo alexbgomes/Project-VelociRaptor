@@ -12,7 +12,7 @@ public class FlightStickController : Interactable {
     private bool needsReset = false;
     private bool firedOnce = false;
     public GameObject Spaceship;
-    BulletPool bulletPool;
+    private BulletPool bulletPool;
 
     // Value returned between -1 to 1, utilise as a vector. 
     // (E.g. 1) -1 -> max intensity in the left direction
@@ -66,7 +66,7 @@ public class FlightStickController : Interactable {
         } else {
             if (needsReset) {
                 needsReset = false;
-                StartCoroutine(SmoothRotation(transform.localRotation, defaultRotation, 0.5F));
+                StartCoroutine(SmoothRotation(transform.localRotation, defaultRotation, 0.5f));
                 StartCoroutine(SmoothValueReset(0.5f));
             }
         }
@@ -90,6 +90,10 @@ public class FlightStickController : Interactable {
     }
 
     public override void OnPinchDown() {
+        if (bulletPool.pooledBullets[0] == null) {
+            bulletPool.ReadyPool();
+        }
+
         if (!firedOnce) {
             GameObject bulletGameObject = bulletPool.GetNextBullet();
             Bullet bullet = bulletGameObject.GetComponent<Bullet>();

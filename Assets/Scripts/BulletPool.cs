@@ -16,6 +16,10 @@ public class BulletPool : MonoBehaviour {
     }
 
     void Start() {
+        ReadyPool();
+    }
+
+    public void ReadyPool() {
         pooledBullets = new List<GameObject>();
         GameObject bulletGameObject;
 
@@ -38,5 +42,14 @@ public class BulletPool : MonoBehaviour {
         }
 
         return null;
+    }
+
+    public void DestroyPool() {
+        for (int i = 0; i < poolCount; i++) {
+            Destroy(pooledBullets[i]);
+        }
+        pooledBullets = new List<GameObject>();
+        poolCount = 0;
+        spawnSource = null;
     }
 }

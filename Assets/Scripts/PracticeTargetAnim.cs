@@ -20,7 +20,11 @@ public class PracticeTargetAnim : StateMachineBehaviour {
        GameObject self = animator.gameObject;
        PracticeTarget practiceTarget = self.GetComponent<PracticeTarget>();
         if (stateInfo.IsName("Death")) {
-            Destroy(self);
+            if (practiceTarget.CanReset) {
+                self.SetActive(false);
+            } else {
+                Destroy(self);
+            }
         }
     }
 

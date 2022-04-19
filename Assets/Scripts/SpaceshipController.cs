@@ -11,7 +11,14 @@ public class SpaceshipController : MonoBehaviour {
     private Vector3 roll;
     private float maxRollAngle = 15.0f;
 
+    int health;
+    public int maxHealth;
+    public int HP {
+        get { return health; }
+    }
+    
     void Start() {
+        health = maxHealth;
         flightStickController = flightStick.GetComponent<FlightStickController>();
         roll = transform.eulerAngles;
     }
@@ -22,7 +29,11 @@ public class SpaceshipController : MonoBehaviour {
         position.x += rollSpeed * flightStickController.Value;
         position.x = Mathf.Clamp(position.x, -GameManager.MaxXBoundary, GameManager.MaxXBoundary);
 
-        roll.z = maxRollAngle * -flightStickController.Value;
+        if (flightStickController.Value == 0.00f) {
+            roll.z = Mathf.Lerp(roll.z, 0.00f, 1/0.05f * Time.deltaTime);
+        } else {
+            roll.z = maxRollAngle * -flightStickController.Value;
+        }
 
         if (moving) {
             position.z += moveSpeed;    
@@ -30,5 +41,35 @@ public class SpaceshipController : MonoBehaviour {
 
         transform.position = position;
         transform.localRotation = Quaternion.Euler(roll);
+    }
+
+    void OnTriggerEnter(Collider other) {
+        GameObject otherGameObject = other.gameObject;
+        if (otherGameObject is null) {
+            return;
+        }
+
+
+        if (other.tag == BulletOrigin.EnemyBullet.ToString()) {
+            Bullet bullet = other.GetComponent<Bullet>();
+            TakeDamage(bullet.damage, bullet.Source);
+            bullet.Expire();
+        }
+    }
+
+    public void TakeDamage(int value, GameObject source) {
+        health -= value;
+        health = Mathf.Clamp(health, 0, maxHealth);
+        if (health == 0) {
+            OnDeath(source);
+        }
+    }
+
+    protected virtual void OnDeath(GameObject cause) {
+        Collider[] collider = GetComponents<Collider>();
+        foreach (Collider c in collider) {
+            c.enabled = false;
+        }
+        Debug.Log($"You died by {cause.name}.");
     }
 }
