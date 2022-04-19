@@ -24,20 +24,23 @@ public class SpaceshipController : MonoBehaviour {
     public int SP {
         get { return shield; }
     }
+    public GameObject shieldGameObject;
+    private PlayerShieldShaderController playerShieldShaderController;
     
     void Start() {
         health = maxHealth;
         shield = maxShield;
-        flightStickController = flightStick.GetComponent<FlightStickController>();
         roll = transform.eulerAngles;
         pitch = transform.eulerAngles;
         rollPitch = transform.eulerAngles;
+
+        flightStickController = flightStick.GetComponent<FlightStickController>();
+        playerShieldShaderController = shieldGameObject.GetComponent<PlayerShieldShaderController>();
+        playerShieldShaderController.alphaDuration = shieldGateDuration;
     }
 
     void Update() {
         UpdateMovement();
-
-
     }
 
     void UpdateMovement() {
@@ -100,13 +103,14 @@ public class SpaceshipController : MonoBehaviour {
         shield = Mathf.Clamp(shield, 0, maxShield);
         if (shield == 0) {
             ShieldGate(1.0f);
+            StartCoroutine(playerShieldShaderController.Break());
         }
     }
 
     public void ShieldGate(float duration) {
-        // play animation for shield break
-        // invoke ienumerator
-        SetVulnerableAfter(shieldGateDuration);
+        shieldGameObject.SetActive(true);
+        invulnerable = true;
+        StartCoroutine(SetVulnerableAfter(shieldGateDuration));
     }
 
     protected virtual void OnDeath(GameObject cause) {
