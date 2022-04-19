@@ -33,12 +33,14 @@
 			{
 				float4 vertex : POSITION;
 				float2 uv : TEXCOORD0;
+				UNITY_VERTEX_INPUT_INSTANCE_ID
 			};
 
 			struct VertexOut
 			{
 				float2 uv : TEXCOORD0;
 				float4 vertex : SV_POSITION;
+				UNITY_VERTEX_OUTPUT_STEREO
 			};
 
 			sampler2D _MainTex;
@@ -99,6 +101,11 @@
 			VertexOut vert(VertexIn v)
 			{
 				VertexOut o;
+
+				UNITY_SETUP_INSTANCE_ID(v); //Insert
+				UNITY_INITIALIZE_OUTPUT(VertexOut, o); //Insert
+				UNITY_INITIALIZE_VERTEX_OUTPUT_STEREO(o); //Insert
+
 				o.vertex = UnityObjectToClipPos(v.vertex);
 				o.uv = TRANSFORM_TEX(v.uv, _MainTex);
 				return o;
@@ -106,6 +113,8 @@
 
 			fixed4 frag(VertexOut i) : SV_Target
 			{
+				UNITY_SETUP_STEREO_EYE_INDEX_POST_VERTEX(i); //Insert
+
 				float pi = 3.14159;
 				float2 halfuv = float2(.5, .5);
 				float2 transuv = i.uv - halfuv;
