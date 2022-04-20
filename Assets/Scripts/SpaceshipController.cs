@@ -21,7 +21,7 @@ public class SpaceshipController : MonoBehaviour {
     }
     int shield;
     public int maxShield;
-    public float shieldGateDuration = 1.0f;
+    public float shieldGateDuration = 3.0f;
     public int SP {
         get { return shield; }
     }
@@ -125,8 +125,9 @@ public class SpaceshipController : MonoBehaviour {
     }
 
     public void ShieldGate(float duration) {
-        Debug.Log("Your shield broke! You will start taking health damage after 1s.");
+        Debug.Log($"Your shield broke! You will start taking health damage after {shieldGateDuration}s.");
         invulnerable = true;
+        StartCoroutine(LerpHealthBarInvulnerableColorOver(shieldGateDuration));
         StartCoroutine(SetVulnerableAfter(shieldGateDuration));
     }
 
@@ -167,6 +168,30 @@ public class SpaceshipController : MonoBehaviour {
             yield return null;
         }
         healthBar.RemovedSegments = targetValue;
+        yield return null;
+    }
+
+    public IEnumerator LerpHealthBarInvulnerableColorOver(float duration) {
+        float elapsed = 0.0f;
+        Color color = healthBar.Color;
+        while (elapsed < duration) {
+            if (elapsed < 2.0f / 3.0f * duration) {
+                color.g = Mathf.Lerp(color.g, 1.0f, elapsed / duration / 2.0f);
+                color.b = Mathf.Lerp(color.b, 1.0f, elapsed / duration / 2.0f);
+            }
+            if (elapsed >= 2.0f / 3.0f * duration) {
+                color.g = Mathf.Lerp(color.g, 0.0f, elapsed / duration);
+                color.b = Mathf.Lerp(color.b, 0.0f, elapsed / duration);
+            }
+            healthBar.Color = color;
+            color = healthBar.Color;
+            elapsed += Time.deltaTime;
+
+            yield return null;
+        }
+        color.g = 0.0f;
+        color.b = 0.0f;
+        healthBar.Color = color;
         yield return null;
     }
 }
