@@ -25,6 +25,7 @@ public class SpaceshipController : MonoBehaviour {
     public int SP {
         get { return shield; }
     }
+    private BulletPool bulletPool;
     public GameObject shieldGameObject;
     private PlayerShieldShaderController playerShieldShaderController;
     public GameObject interiorParentGameObject;
@@ -42,6 +43,7 @@ public class SpaceshipController : MonoBehaviour {
         playerShieldShaderController = shieldGameObject.GetComponent<PlayerShieldShaderController>();
         playerShieldShaderController.alphaDuration = shieldGateDuration;
 
+        bulletPool = GetComponent<BulletPool>();
         shieldBar = interiorParentGameObject.transform
                         .Find("CockpitEquipments_Gauge1/CockpitEquipments_Gauge1-Screen/SP_Canvas/RadialSegmentedHealthBarImage")
                         .GetComponent<UltimateCircularHealthBar>();
@@ -101,6 +103,24 @@ public class SpaceshipController : MonoBehaviour {
             }
             bullet.Expire();
         }
+
+        if (other.tag == "Pickup") {
+            PickupsController pickupsController = other.GetComponent<PickupsController>();
+            PickupType pickupType = pickupsController.pickupType;
+            switch(pickupType) {
+                case PickupType.Shield:
+                    pickupsController.PickupShield(ref shield, maxShield, pickupsController.value);
+                    break;
+                case PickupType.Invul:
+                    pickupsController.PickupInvul(InvulnerableFor, pickupsController.duration);
+                    break;
+                case PickupType.Multiplier:
+                    pickupsController.PickupMultiplier(bulletPool, pickupsController.value, pickupsController.duration);
+                    break;
+            }
+            Debug.Log($"Picked up {other.name}");
+            Destroy(other.gameObject);
+        }
     }
 
     public void TakeHealthDamage(int value, GameObject source) {
@@ -126,9 +146,7 @@ public class SpaceshipController : MonoBehaviour {
 
     public void ShieldGate(float duration) {
         Debug.Log($"Your shield broke! You will start taking health damage after {shieldGateDuration}s.");
-        invulnerable = true;
-        StartCoroutine(LerpHealthBarInvulnerableColorOver(shieldGateDuration));
-        StartCoroutine(SetVulnerableAfter(shieldGateDuration));
+        InvulnerableFor(shieldGateDuration);
     }
 
     protected virtual void OnDeath(GameObject cause) {
@@ -137,6 +155,12 @@ public class SpaceshipController : MonoBehaviour {
             c.enabled = false;
         }
         Debug.Log($"You died by {cause.name}.");
+    }
+
+    public void InvulnerableFor(float duration) {
+        invulnerable = true;
+        StartCoroutine(LerpHealthBarInvulnerableColorOver(duration));
+        StartCoroutine(SetVulnerableAfter(duration));
     }
 
     public IEnumerator SetVulnerableAfter(float duration) {

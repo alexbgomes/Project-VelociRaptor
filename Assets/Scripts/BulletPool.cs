@@ -54,4 +54,13 @@ public class BulletPool : MonoBehaviour {
         poolCount = 0;
         spawnSource = null;
     }
+
+    public void SetBulletDamage(int damage) {
+        bulletDamage = damage;
+        for (int i = 0; i < poolCount; i++) {
+            GameObject bulletGameObject = pooledBullets[i];
+            Bullet bullet = bulletGameObject.GetComponent<Bullet>();
+            bullet.damage = bulletDamage;
+        }
+    }
 }

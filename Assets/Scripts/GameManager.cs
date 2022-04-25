@@ -8,6 +8,9 @@ public class GameManager : MonoBehaviour {
     static List<GameObject> enemyGameObjects;
 
     static GameObject spaceship;
+    public static GameObject pickupShieldPrefab;
+    public static GameObject pickupInvulPrefab;
+    public static GameObject pickupMultiplierPrefab;
     public static GameObject Spaceship {
         get {
             return spaceship;
@@ -74,6 +77,12 @@ public class GameManager : MonoBehaviour {
         }
     }
 
+    public static float MaxZAwayFromPlayer {
+        get {
+            return -25.0f;
+        }
+    }
+
     public static GameManager Instance {
         get {
             if (!instance) {
@@ -100,20 +109,43 @@ public class GameManager : MonoBehaviour {
         GameManager.CurrentLevelScore = new List<int>();
         GameManager.Spaceship = GameObject.Find("Spaceship");
 
+        GameManager.LoadResourcePrefabs();
+
         DontDestroyOnLoad(GameObject.Find("GameManager"));
         Debug.Log("GameManager initialized.");
     }
 
+    public static void LoadResourcePrefabs() {
+        pickupShieldPrefab = Resources.Load<GameObject>("Prefabs/Shield Pickup");
+        pickupInvulPrefab = Resources.Load<GameObject>("Prefabs/Invul Pickup");
+        pickupMultiplierPrefab = Resources.Load<GameObject>("Prefabs/Multiplier Pickup");
+    }
+
     void Update() {
-        foreach (GameObject gameObject in GameManager.EnemyGameObjects) {
+        foreach (GameObject gameObject in GameManager.EnemyGameObjects.ToList()) { //ToList ensures mutation does not throw error
             MonoBehaviour monoBehaviour = gameObject.GetComponent<MonoBehaviour>();
-            if (monoBehaviour is PracticeTarget) {
-                PracticeTarget practiceTarget = (PracticeTarget)monoBehaviour;
-                if (practiceTarget.CanReset && practiceTarget.transform.position.z - GameManager.Spaceship.transform.position.z < -25.0f) {
-                    Debug.Log(practiceTarget.transform.position.z - GameManager.Spaceship.transform.position.z);
-                    Debug.Log($"{practiceTarget.transform.name} is too far from player, can reset...");
-                    practiceTarget.Reset();
-                    practiceTarget.gameObject.SetActive(true);
+            if (monoBehaviour is Enemy) {
+                if (monoBehaviour is PracticeTarget) {
+                    PracticeTarget practiceTarget = (PracticeTarget)monoBehaviour;
+                    if (practiceTarget.CanReset && CheckOutOfBounds(practiceTarget)) {
+                        Debug.Log(practiceTarget.transform.position.z - GameManager.Spaceship.transform.position.z);
+                        Debug.Log($"{practiceTarget.transform.name} is too far from player, can reset...");
+                        practiceTarget.Reset();
+                        practiceTarget.gameObject.SetActive(true);
+                    }
+                } else if (monoBehaviour is PickupsController) {
+                    PickupsController pickupsController = (PickupsController)monoBehaviour;
+                    if (CheckOutOfBounds(pickupsController)) {
+                        Destroy(pickupsController.gameObject);
+                    }
+                } else if (monoBehaviour is Enemy) {
+                    Enemy enemy = (Enemy)monoBehaviour;
+                    if (CheckOutOfBounds(enemy)) {
+                        Debug.Log(enemy.transform.position.z - GameManager.Spaceship.transform.position.z);
+                        Debug.Log($"{enemy.transform.name} is too far from player, killing without increasing score...");
+                        enemy.TakeDamage(9999, GameManager.Instance.gameObject);
+
+                    }
                 }
             }
         }
@@ -140,7 +172,18 @@ public class GameManager : MonoBehaviour {
         // Post load
         BulletPool spaceshipBulletPool = spaceship.GetComponent<BulletPool>();
         spaceshipBulletPool.ReadyPool();
+    }
 
+    bool CheckOutOfBounds(Transform transform) {
+        return transform.position.z - GameManager.Spaceship.transform.position.z < MaxZAwayFromPlayer;
+    }
+
+    bool CheckOutOfBounds(GameObject gameObject) {
+        return CheckOutOfBounds(gameObject.transform);
+    }
+
+    bool CheckOutOfBounds(MonoBehaviour script) {
+        return CheckOutOfBounds(script.transform);
     }
 
 

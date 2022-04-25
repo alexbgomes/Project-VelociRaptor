@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public class Alien : Enemy {
@@ -8,6 +9,7 @@ public class Alien : Enemy {
     private bool canShoot = true;
     private BulletPool bulletPool;
     DissolveShaderController dissolveShaderController;
+    public bool TEST;
     
     public override void Start() {
         MaxHP = 1;
@@ -15,6 +17,12 @@ public class Alien : Enemy {
         bulletPool = GetComponent<BulletPool>();
         dissolveShaderController = GetComponent<DissolveShaderController>();
         base.Start();
+        List<Drop> dropTable = new List<Drop> { 
+            new Drop { PickupType=PickupType.Shield, Chance=0.14f, Value=25 },
+            new Drop { PickupType=PickupType.Invul, Chance=0.05f, Duration=3.0f },
+            new Drop { PickupType=PickupType.Multiplier, Chance=0.14f, Value=2, Duration=5.0f }
+         };
+         SetDropTable(dropTable);
     }
 
     void Update() {
@@ -24,6 +32,10 @@ public class Alien : Enemy {
             }
             if (canShoot) {
                 ShootPlayer();
+            }
+
+            if (TEST) {
+                TakeDamage(9999, GameManager.Spaceship.gameObject);
             }
         }
     }
@@ -42,8 +54,8 @@ public class Alien : Enemy {
         }
     }
 
-    protected override void OnDeath(GameObject cause) {
-        base.OnDeath(cause);
+    protected override void OnDeath(GameObject cause, bool canDrop) {
+        base.OnDeath(cause, canDrop);
         bulletPool.DestroyPool();
         StartCoroutine(dissolveShaderController.Dissolve());
     }
