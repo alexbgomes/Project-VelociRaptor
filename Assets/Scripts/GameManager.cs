@@ -186,5 +186,23 @@ public class GameManager : MonoBehaviour {
         return CheckOutOfBounds(script.transform);
     }
 
+    public static void NextSceneClick()
+    {
+        Debug.Log("Test");
+        GameObject spaceship = GameManager.Spaceship;
 
+        EnemyGameObjects = new List<GameObject>();
+        GameManager.CurrentLevelScore = new List<int>();
+        GameManager.levelQueued = false;
+        Vector3 position = spaceship.transform.position;
+        position = Vector3.up * 8;
+        spaceship.transform.position = position;
+
+        GameManager.CurrentLevel = GameManager.CurrentLevel + 1;
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+
+        // Post load
+        BulletPool spaceshipBulletPool = spaceship.GetComponent<BulletPool>();
+        spaceshipBulletPool.ReadyPool();
+    }
 }

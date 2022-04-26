@@ -8,6 +8,7 @@ TagManager:
   - EnemyBullet
   - Enemy
   - Pickup
+  - StartButton
   layers:
   - Default
   - TransparentFX
