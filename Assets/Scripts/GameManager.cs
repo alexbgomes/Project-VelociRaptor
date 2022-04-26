@@ -86,6 +86,12 @@ public class GameManager : MonoBehaviour {
         }
     }
 
+    public static float MaxZToPlayerForSpawn {
+        get {
+            return 150.0f;
+        }
+    }
+
     public static GameManager Instance {
         get {
             if (!instance) {
@@ -107,7 +113,6 @@ public class GameManager : MonoBehaviour {
             // load data into RAM; basically set GameManager variables from save data
             GameManager.CurrentLevel = saveData.CurrentLevel;
         }
-
 
         GameManager.EnemyGameObjects = new List<GameObject>();
         GameManager.CurrentLevelScore = new List<int>();
@@ -137,6 +142,9 @@ public class GameManager : MonoBehaviour {
 
     void Update() {
         foreach (GameObject gameObject in GameManager.EnemyGameObjects.ToList()) { //ToList ensures mutation does not throw error
+            if (gameObject == null) {
+                continue;
+            }
             MonoBehaviour monoBehaviour = gameObject.GetComponent<MonoBehaviour>();
             if (monoBehaviour is Enemy) {
                 if (monoBehaviour is PracticeTarget) {
@@ -154,8 +162,13 @@ public class GameManager : MonoBehaviour {
                     }
                 } else if (monoBehaviour is Enemy) {
                     Enemy enemy = (Enemy)monoBehaviour;
+
+                    if (CheckSpawnable(enemy) && !enemy.gameObject.activeInHierarchy) {
+                        enemy.gameObject.SetActive(true);
+                        Debug.Log($"GameManager has spawned {enemy.gameObject.name}...");
+                    }
+
                     if (CheckOutOfBounds(enemy)) {
-                        Debug.Log(enemy.transform.position.z - GameManager.Spaceship.transform.position.z);
                         Debug.Log($"{enemy.transform.name} is too far from player, killing without increasing score...");
                         enemy.TakeDamage(9999, GameManager.Instance.gameObject);
 
@@ -200,6 +213,18 @@ public class GameManager : MonoBehaviour {
 
     bool CheckOutOfBounds(MonoBehaviour script) {
         return CheckOutOfBounds(script.transform);
+    }
+
+    bool CheckSpawnable(Transform transform) {
+        return transform.position.z - GameManager.Spaceship.transform.position.z <= MaxZToPlayerForSpawn;
+    }
+
+    bool CheckSpawnable(GameObject gameObject) {
+        return CheckSpawnable(gameObject.transform);
+    }
+
+    bool CheckSpawnable(MonoBehaviour script) {
+        return CheckSpawnable(script.transform);
     }
 
     public static void LoadMainGameClick()
