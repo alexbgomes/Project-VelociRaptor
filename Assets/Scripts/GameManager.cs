@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-
+using Valve.VR;
 public class GameManager : MonoBehaviour {
     static GameManager instance;
     static List<GameObject> enemyGameObjects;
@@ -186,23 +186,18 @@ public class GameManager : MonoBehaviour {
         return CheckOutOfBounds(script.transform);
     }
 
-    public static void NextSceneClick()
+    public static void LoadMainGameClick()
     {
-        Debug.Log("Test");
-        GameObject spaceship = GameManager.Spaceship;
-
+        SteamVR_Fade.View(new Color(0, 0, 0), 1.0f);
         EnemyGameObjects = new List<GameObject>();
         GameManager.CurrentLevelScore = new List<int>();
         GameManager.levelQueued = false;
-        Vector3 position = spaceship.transform.position;
-        position = Vector3.up * 8;
-        spaceship.transform.position = position;
-
         GameManager.CurrentLevel = GameManager.CurrentLevel + 1;
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
-
-        // Post load
-        BulletPool spaceshipBulletPool = spaceship.GetComponent<BulletPool>();
-        spaceshipBulletPool.ReadyPool();
+        SceneManager.LoadScene(1);
+        instance.Invoke("SceneFadeIn", 1.0f);
+    }
+    private void SceneFadeIn()
+    {
+        SteamVR_Fade.View(Color.clear, 1.0f);
     }
 }

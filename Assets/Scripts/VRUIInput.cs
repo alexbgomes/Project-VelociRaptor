@@ -49,11 +49,10 @@ public class VRUIInput : MonoBehaviour
             laserLine.SetPosition(1, handPosition.forward * scale + handPosition.position);
             if (Physics.Raycast(handPosition.position, transform.TransformDirection(handPosition.forward * scale), out hit, 50))
             {
-                Debug.Log(hit.collider.gameObject.tag);
                 if (hit.collider.gameObject.CompareTag("StartButton"))
                 {
-                   
-                    GameManager.NextSceneClick();
+                    GameManager.LoadMainGameClick();
+                 
                 }
             }
         }
