@@ -65,7 +65,9 @@ public class Alien : Enemy {
 
         float t = trackingRate * Time.deltaTime;
         t = t * t * (3.0f - 2.0f * t);
-        position.x = Mathf.Lerp(position.x, GameManager.Spaceship.transform.position.x, t);
+        Vector3 trackingVector = GameManager.Spaceship.transform.position;
+        trackingVector.z = position.z;
+        position = Vector3.Lerp(position, trackingVector, t);
 
         // Prevent enemies from going inside each other
         Collider collider = GetComponent<Collider>();

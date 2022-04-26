@@ -111,7 +111,6 @@ public class FlightStickController : Interactable {
     }
 
     public override void OnPinchDown() {
-        Debug.Log($"Value: {value.ToString()}");
         if (bulletPool.pooledBullets[0] == null) {
             bulletPool.ReadyPool();
         }

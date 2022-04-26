@@ -9,6 +9,7 @@ public class Enemy : MonoBehaviour {
     private int scoreValue;
     protected List<Drop> DropTable;
     protected float DropGuaranteeThreshold = 0.33f; // 33% of the time, an item will drop
+    protected bool ready = false;
     public int HP {
         get { return health; }
     }
@@ -38,12 +39,15 @@ public class Enemy : MonoBehaviour {
     }
 
     public virtual void Start() {
+        Debug.Log($"Start function was called for {transform.name}");
         health = maxHealth;
         tag = "Enemy";
         ManagedEnemies = GameManager.EnemyGameObjects;
         ManagedEnemies.Add(gameObject);
         ManagedLevelScore = GameManager.CurrentLevelScore;
         DropTable = new List<Drop>();
+        gameObject.SetActive(false); // hide by default after starting
+        ready = true;
     }
 
     public void TakeDamage(int value, GameObject source) {

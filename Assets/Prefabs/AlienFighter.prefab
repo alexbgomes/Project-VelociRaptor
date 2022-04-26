@@ -160,7 +160,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   trackingRate: 8
-  shootingRange: 50
+  shootingRange: 100
   fireRate: 2
   trackPlayer: 1
   TEST: 0
