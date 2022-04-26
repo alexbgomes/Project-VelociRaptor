@@ -10,6 +10,7 @@ public class BulletPool : MonoBehaviour {
     public int poolCount;
     public GameObject spawnSource;
     public float bulletSpeed = 2.0f;
+    public int bulletDamage = 2;
 
     void Awake() {
         bulletPoolInstance = this;   
@@ -31,6 +32,7 @@ public class BulletPool : MonoBehaviour {
             Bullet bullet = bulletGameObject.GetComponent<Bullet>();
             bullet.Source = spawnSource;
             bullet.speed = bulletSpeed;
+            bullet.damage = bulletDamage;
         }
     }
 
@@ -51,5 +53,14 @@ public class BulletPool : MonoBehaviour {
         pooledBullets = new List<GameObject>();
         poolCount = 0;
         spawnSource = null;
+    }
+
+    public void SetBulletDamage(int damage) {
+        bulletDamage = damage;
+        for (int i = 0; i < poolCount; i++) {
+            GameObject bulletGameObject = pooledBullets[i];
+            Bullet bullet = bulletGameObject.GetComponent<Bullet>();
+            bullet.damage = bulletDamage;
+        }
     }
 }

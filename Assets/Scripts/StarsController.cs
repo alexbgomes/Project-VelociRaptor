@@ -4,19 +4,20 @@ using UnityEngine;
 
 public class StarsController : MonoBehaviour
 {
-    public float moveSpeed = 0.3f;
+    public float moveSpeed = GameManager.PlayerMovespeed;
+    public bool moving = true;
 
     // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    void Start() { }
 
     // Update is called once per frame
-    void Update()
-    {
-        Vector3 position = transform.position;
-        position.z += moveSpeed;
-        transform.position = position;
+    void Update() {
+        moving = GameManager.PlayerMoving;
+
+        if (moving) {
+            Vector3 position = transform.position;
+            position.z += moveSpeed;
+            transform.position = position;
+        }
     }
 }

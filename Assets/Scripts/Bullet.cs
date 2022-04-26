@@ -16,7 +16,9 @@ public class Bullet : MonoBehaviour {
 
     void Update() {
         Vector3 position = transform.position;
-        position.z += (int)direction * speed;
+        Quaternion rotation = transform.rotation;
+        position.z += (int)direction * speed * Mathf.Cos(rotation.x);
+        position.y += (int)direction * speed * -Mathf.Sin(rotation.x);
         transform.position = position;
     }
 

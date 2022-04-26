@@ -6,6 +6,7 @@ public class FlightStickController : Interactable {
     public float sensitivity = 3.0f;
     public float maxHAngle = 45.0f;
     public float maxVAngle = 30.0f;
+    public float bulletDamage = 2.0f;
     private float breakDistance = 0.4f; // empiracally determined
     private float lerpDelay = 0.05f;
     private Quaternion defaultRotation = Quaternion.Euler(Vector3.zero);

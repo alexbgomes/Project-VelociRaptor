@@ -41,8 +41,8 @@ public class PracticeTarget : Enemy {
         }
     }
 
-    protected override void OnDeath(GameObject cause) {
-        base.OnDeath(cause);
+    protected override void OnDeath(GameObject cause, bool canDrop) {
+        base.OnDeath(cause, canDrop);
         Animator animator = GetComponent<Animator>();
         animator.SetTrigger("Die");
     }
