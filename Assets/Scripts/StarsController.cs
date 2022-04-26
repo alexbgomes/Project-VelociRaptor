@@ -4,18 +4,15 @@ using UnityEngine;
 
 public class StarsController : MonoBehaviour
 {
-    public float moveSpeed = 0.3f;
+    public float moveSpeed = GameManager.PlayerMovespeed;
     public bool moving = true;
-    private SpaceshipController spaceshipController;
 
     // Start is called before the first frame update
-    void Start() {
-        spaceshipController = GameManager.Spaceship.GetComponent<SpaceshipController>();
-    }
+    void Start() { }
 
     // Update is called once per frame
     void Update() {
-        moving = spaceshipController.moving;
+        moving = GameManager.PlayerMoving;
 
         if (moving) {
             Vector3 position = transform.position;

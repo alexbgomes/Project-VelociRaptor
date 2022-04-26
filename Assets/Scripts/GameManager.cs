@@ -11,6 +11,9 @@ public class GameManager : MonoBehaviour {
     public static GameObject pickupShieldPrefab;
     public static GameObject pickupInvulPrefab;
     public static GameObject pickupMultiplierPrefab;
+    public static Material skyboxMaterial;
+    public static float PlayerMovespeed;
+    public static bool PlayerMoving;
     public static GameObject Spaceship {
         get {
             return spaceship;
@@ -105,20 +108,26 @@ public class GameManager : MonoBehaviour {
             GameManager.CurrentLevel = saveData.CurrentLevel;
         }
 
+
         GameManager.EnemyGameObjects = new List<GameObject>();
         GameManager.CurrentLevelScore = new List<int>();
         GameManager.Spaceship = GameObject.Find("Spaceship");
 
-        GameManager.LoadResourcePrefabs();
+        GameManager.LoadResources();
+
+        GameManager.PlayerMovespeed = GameManager.Spaceship.GetComponent<SpaceshipController>().moveSpeed;
+        GameManager.PlayerMoving = GameManager.Spaceship.GetComponent<SpaceshipController>().moving;
 
         DontDestroyOnLoad(GameObject.Find("GameManager"));
         Debug.Log("GameManager initialized.");
     }
 
-    public static void LoadResourcePrefabs() {
+    public static void LoadResources() {
         pickupShieldPrefab = Resources.Load<GameObject>("Prefabs/Shield Pickup");
         pickupInvulPrefab = Resources.Load<GameObject>("Prefabs/Invul Pickup");
         pickupMultiplierPrefab = Resources.Load<GameObject>("Prefabs/Multiplier Pickup");
+
+        skyboxMaterial = Resources.Load<Material>("Skybox Materials/PlanetaryEarth4k");
     }
 
     void Update() {
@@ -152,6 +161,8 @@ public class GameManager : MonoBehaviour {
         if (!GameManager.LevelQueued && GameManager.CurrentLevelScore.Sum() >= LevelData.getScore(CurrentLevel)) {
             GameManager.LevelQueued = true;
             Debug.Log("Level Passed!");
+            SpaceshipController spaceshipController = Spaceship.GetComponent<SpaceshipController>();
+            spaceshipController.StartWarpDrive();
             Invoke("NextScene", 5.0f);
         }
     }

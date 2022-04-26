@@ -1,41 +1,61 @@
+using System.Collections;
 using System.Collections.Generic;
+using VolumetricLines;
 using UnityEngine;
 
-public class Alien : Enemy {
-    public float trackingRate = 6.0f;
-    public float shootingRange = 50.0f;
+public class Destroyer : Enemy {
+    public bool moving = true;
+    public float moveSpeed = GameManager.PlayerMovespeed;
+    public float trackingRate = 4.0f;
+    public float shootingRange = 100.0f;
     public float fireRate = 2.0f;
+    public float laserCooldown = 15.0f;
+    public float laserDuration = 5.0f;
     public bool trackPlayer = true;
     private bool canShoot = true;
+    private bool canLaser = false;
     private BulletPool bulletPool;
     DissolveShaderController dissolveShaderController;
+    private GameObject laserObject;
+    VolumetricLineBehavior volumetricLineBehavior;
     public bool TEST;
     
     public override void Start() {
-        MaxHP = 1;
-        ScoreValue = 100;
+        MaxHP = 500;
+        ScoreValue = 5000;
         bulletPool = GetComponent<BulletPool>();
         dissolveShaderController = GetComponent<DissolveShaderController>();
         base.Start();
-        List<Drop> dropTable = new List<Drop> { 
-            new Drop { PickupType=PickupType.Shield, Chance=0.14f, Value=25 },
-            new Drop { PickupType=PickupType.Invul, Chance=0.05f, Duration=3.0f },
-            new Drop { PickupType=PickupType.Multiplier, Chance=0.14f, Value=2, Duration=5.0f }
-        };
+        List<Drop> dropTable = new List<Drop> { };
         SetDropTable(dropTable);
+        Invoke("ResetLaserCooldown", laserCooldown);
+        moving = GameManager.PlayerMoving;
+        laserObject = transform.Find("DestroyerLaser").gameObject;
+        volumetricLineBehavior = laserObject.GetComponent<VolumetricLineBehavior>();
+        laserObject.GetComponent<Laser>().Source = gameObject;
     }
 
-    void Update() {
+    void LateUpdate() {
         if (IsAlive) {
             if (trackPlayer) {
             TrackPlayer();
             }
             if (canShoot) {
-                ShootPlayer();
+                if (canLaser) {
+                    DeathLaser();
+                } else {
+                    ShootPlayer();
+                }
             }
 
             if (TEST) {
                 TakeDamage(9999, GameManager.Spaceship.gameObject);
+            }
+
+            if (moving) {
+                Vector3 position = transform.position;
+                position.z += moveSpeed;
+                transform.position = position;
             }
         }
     }
@@ -89,7 +109,7 @@ public class Alien : Enemy {
             float rayWidth = collider.bounds.size.x;
             RaycastHit hit;
             if (Physics.SphereCast(position, rayWidth, Vector3.back, out hit, distanceBetween)) {
-                if (hit.transform.tag == "Enemy") {
+                if (hit.transform.tag == "Enemy" && hit.transform != transform) {
                     return;
                 }
             }
@@ -105,8 +125,50 @@ public class Alien : Enemy {
         }
     }
 
+    void DeathLaser() {
+        Debug.Log("Death laser firing!");
+        StartCoroutine(StartLerpLaserWidth(0.5f, 20.0f, 1.0f));
+    }
+
+    IEnumerator StartLerpLaserWidth(float a, float b, float duration) {
+        float elapsed = 0.0f;
+        float width = a;
+        canLaser = false;
+        trackPlayer = false;
+        canShoot = false;
+        laserObject.SetActive(true);
+        while (elapsed < duration) {
+            width = Mathf.Lerp(width, b, elapsed / duration);
+            volumetricLineBehavior.LineWidth = width;
+            elapsed += Time.deltaTime;
+            yield return null;
+        }
+        volumetricLineBehavior.LineWidth = b;
+        laserObject.GetComponent<Collider>().enabled = true;
+        yield return new WaitForSeconds(laserDuration);
+        laserObject.GetComponent<Collider>().enabled = false;
+        elapsed = 0.0f;
+        while (elapsed < duration) {
+            width = Mathf.Lerp(width, a, elapsed / duration);
+            volumetricLineBehavior.LineWidth = width;
+            elapsed += Time.deltaTime * 0.5f;
+            yield return null;
+        }
+        volumetricLineBehavior.LineWidth = width;
+        laserObject.SetActive(false);
+        trackPlayer = true;
+        Invoke("ResetShootingCooldown", 1.0f);
+        Invoke("ResetLaserCooldown", laserCooldown);
+        yield return null;
+    }
+
+
+
     void ResetShootingCooldown() {
         canShoot = true;
     }
 
+    void ResetLaserCooldown() {
+        canLaser = true;
+    }
 }

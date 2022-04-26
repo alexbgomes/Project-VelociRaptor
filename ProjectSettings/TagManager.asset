@@ -8,6 +8,8 @@ TagManager:
   - EnemyBullet
   - Enemy
   - Pickup
+  - EnemyLaser
+  - PlayerLaser
   layers:
   - Default
   - TransparentFX
