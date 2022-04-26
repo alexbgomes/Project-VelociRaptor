@@ -14,6 +14,7 @@ public class Destroyer : Enemy {
     public bool trackPlayer = true;
     private bool canShoot = true;
     private AudioSource bulletSound;
+    public AudioSource laserSound;
     private bool canLaser = false;
     private BulletPool bulletPool;
     DissolveShaderController dissolveShaderController;
@@ -140,6 +141,7 @@ public class Destroyer : Enemy {
         trackPlayer = false;
         canShoot = false;
         laserObject.SetActive(true);
+        laserSound.Play();
         while (elapsed < duration) {
             width = Mathf.Lerp(width, b, elapsed / duration);
             volumetricLineBehavior.LineWidth = width;
