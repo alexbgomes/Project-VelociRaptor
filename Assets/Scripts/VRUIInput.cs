@@ -9,6 +9,7 @@ public class VRUIInput : MonoBehaviour
     public SteamVR_Action_Boolean TriggerOn;
 
     public SteamVR_Input_Sources handType;
+    public GameObject cameraRig;
     private LineRenderer laserLine;
     private Transform handPosition;
 
@@ -51,6 +52,7 @@ public class VRUIInput : MonoBehaviour
             {
                 if (hit.collider.gameObject.CompareTag("StartButton"))
                 {
+                    Destroy(cameraRig);
                     GameManager.LoadMainGameClick();
                  
                 }

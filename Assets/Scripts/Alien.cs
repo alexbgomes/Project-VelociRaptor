@@ -8,6 +8,7 @@ public class Alien : Enemy {
     public bool trackPlayer = true;
     private bool canShoot = true;
     private BulletPool bulletPool;
+    private AudioSource bulletSound;
     DissolveShaderController dissolveShaderController;
     public bool TEST;
     
@@ -100,6 +101,7 @@ public class Alien : Enemy {
             }
             Bullet bullet = bulletObject.GetComponent<Bullet>();
             bullet.Incept();
+            bulletSound.Play();
             canShoot = false;
             Invoke("ResetShootingCooldown", fireRate);
         }
