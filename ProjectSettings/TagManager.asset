@@ -9,6 +9,8 @@ TagManager:
   - Enemy
   - Pickup
   - StartButton
+  - EnemyLaser
+  - PlayerLaser
   layers:
   - Default
   - TransparentFX
