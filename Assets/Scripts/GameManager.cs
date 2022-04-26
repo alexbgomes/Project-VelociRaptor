@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-
+using Valve.VR;
 public class GameManager : MonoBehaviour {
     static GameManager instance;
     static List<GameObject> enemyGameObjects;
@@ -197,5 +197,18 @@ public class GameManager : MonoBehaviour {
         return CheckOutOfBounds(script.transform);
     }
 
-
+    public static void LoadMainGameClick()
+    {
+        SteamVR_Fade.View(new Color(0, 0, 0), 1.0f);
+        EnemyGameObjects = new List<GameObject>();
+        GameManager.CurrentLevelScore = new List<int>();
+        GameManager.levelQueued = false;
+        GameManager.CurrentLevel = GameManager.CurrentLevel + 1;
+        SceneManager.LoadScene(1);
+        instance.Invoke("SceneFadeIn", 1.0f);
+    }
+    private void SceneFadeIn()
+    {
+        SteamVR_Fade.View(Color.clear, 1.0f);
+    }
 }
