@@ -13,6 +13,8 @@ public class Destroyer : Enemy {
     public float laserDuration = 5.0f;
     public bool trackPlayer = true;
     private bool canShoot = true;
+    private AudioSource bulletSound;
+    public AudioSource laserSound;
     private bool canLaser = false;
     private BulletPool bulletPool;
     DissolveShaderController dissolveShaderController;
@@ -26,6 +28,7 @@ public class Destroyer : Enemy {
         bulletPool = GetComponent<BulletPool>();
         dissolveShaderController = GetComponent<DissolveShaderController>();
         base.Start();
+        bulletSound = GetComponent<AudioSource>();
         List<Drop> dropTable = new List<Drop> { };
         SetDropTable(dropTable);
         moving = GameManager.PlayerMoving;
@@ -129,6 +132,7 @@ public class Destroyer : Enemy {
             }
             Bullet bullet = bulletObject.GetComponent<Bullet>();
             bullet.Incept();
+            bulletSound.Play();
             canShoot = false;
             Invoke("ResetShootingCooldown", fireRate);
         }
@@ -146,6 +150,7 @@ public class Destroyer : Enemy {
         trackPlayer = false;
         canShoot = false;
         laserObject.SetActive(true);
+        laserSound.Play();
         while (elapsed < duration) {
             width = Mathf.Lerp(width, b, elapsed / duration);
             volumetricLineBehavior.LineWidth = width;

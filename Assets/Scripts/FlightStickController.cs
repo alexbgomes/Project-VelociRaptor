@@ -14,6 +14,7 @@ public class FlightStickController : Interactable {
     private bool firedOnce = false;
     private BulletPool bulletPool;
     private ComponentValues value;
+    private AudioSource bulletSound; 
 
     // Value returned between -1 to 1, utilise as a vector. 
     // (E.g. 1) -1 -> max intensity in the left direction
@@ -27,6 +28,7 @@ public class FlightStickController : Interactable {
     }
 
     void Start() {
+        bulletSound = GetComponent<AudioSource>();
         bulletPool = GameManager.Spaceship.GetComponent<BulletPool>();
         value = new ComponentValues(0.0f, 0.0f, maxHAngle, maxVAngle);
     }
@@ -119,6 +121,7 @@ public class FlightStickController : Interactable {
             GameObject bulletGameObject = bulletPool.GetNextBullet();
             Bullet bullet = bulletGameObject.GetComponent<Bullet>();
             bullet.Incept();
+            bulletSound.Play();
             firedOnce = true;
             boundPlayerController.InvokeStrongHapticPulse(0.05f);
         }

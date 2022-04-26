@@ -39,7 +39,7 @@ public class GameManager : MonoBehaviour {
         }
     }
 
-    static int currentLevel = 1;
+    static int currentLevel = 0;
     public static int CurrentLevel {
         get {
             return currentLevel;
@@ -116,12 +116,17 @@ public class GameManager : MonoBehaviour {
 
         GameManager.EnemyGameObjects = new List<GameObject>();
         GameManager.CurrentLevelScore = new List<int>();
-        GameManager.Spaceship = GameObject.Find("Spaceship");
 
-        GameManager.LoadResources();
+        if (SceneManager.GetActiveScene().buildIndex != 0)
+        {
+            GameManager.Spaceship = GameObject.Find("Spaceship");
 
-        GameManager.PlayerMovespeed = GameManager.Spaceship.GetComponent<SpaceshipController>().moveSpeed;
-        GameManager.PlayerMoving = GameManager.Spaceship.GetComponent<SpaceshipController>().moving;
+            GameManager.LoadResources();
+
+            GameManager.PlayerMovespeed = GameManager.Spaceship.GetComponent<SpaceshipController>().moveSpeed;
+            GameManager.PlayerMoving = GameManager.Spaceship.GetComponent<SpaceshipController>().moving;
+        }
+        
 
         DontDestroyOnLoad(GameObject.Find("GameManager"));
         Debug.Log("GameManager initialized.");
@@ -229,7 +234,7 @@ public class GameManager : MonoBehaviour {
         GameManager.CurrentLevelScore = new List<int>();
         GameManager.levelQueued = false;
         GameManager.CurrentLevel = GameManager.CurrentLevel + 1;
-        SceneManager.LoadScene(1);
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
         instance.Invoke("SceneFadeIn", 1.0f);
     }
     private void SceneFadeIn()

@@ -9,7 +9,6 @@ public class Laser : MonoBehaviour {
     void Start() {
         tag = laserOrigin.ToString();
     }
-
 }
 
 public enum LaserOrigin {
