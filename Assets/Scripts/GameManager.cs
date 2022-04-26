@@ -171,13 +171,17 @@ public class GameManager : MonoBehaviour {
                 }
             }
         }
-        if (!GameManager.LevelQueued && GameManager.CurrentLevelScore.Sum() >= LevelData.getScore(CurrentLevel)) {
+        if (!GameManager.LevelQueued && GetCurrentScore() >= LevelData.getScore(CurrentLevel)) {
             GameManager.LevelQueued = true;
             Debug.Log("Level Passed!");
             SpaceshipController spaceshipController = Spaceship.GetComponent<SpaceshipController>();
             spaceshipController.StartWarpDrive();
             Invoke("NextScene", 5.0f);
         }
+    }
+
+    public int GetCurrentScore() {
+        return GameManager.CurrentLevelScore.Sum();
     }
 
     void NextScene() {
