@@ -14,6 +14,7 @@ public class GameManager : MonoBehaviour {
     public static Material skyboxMaterial;
     public static float PlayerMovespeed;
     public static bool PlayerMoving;
+    public static bool playerNeedsReset;
     public static GameObject Spaceship {
         get {
             return spaceship;
@@ -125,6 +126,7 @@ public class GameManager : MonoBehaviour {
 
             GameManager.PlayerMovespeed = GameManager.Spaceship.GetComponent<SpaceshipController>().moveSpeed;
             GameManager.PlayerMoving = GameManager.Spaceship.GetComponent<SpaceshipController>().moving;
+            playerNeedsReset = false;
         }
         
 
@@ -141,7 +143,18 @@ public class GameManager : MonoBehaviour {
     }
 
     void Update() {
+        SpaceshipController spaceshipController;
+        if (GameManager.Spaceship != null) {
+            spaceshipController = GameManager.Spaceship.GetComponent<SpaceshipController>();
+        } else {
+            spaceshipController = null;
+            return;
+        }
+        
         foreach (GameObject gameObject in GameManager.EnemyGameObjects.ToList()) { //ToList ensures mutation does not throw error
+            if (!spaceshipController.IsAlive) {
+                break;
+            }
             if (gameObject == null) {
                 continue;
             }
@@ -176,13 +189,34 @@ public class GameManager : MonoBehaviour {
                 }
             }
         }
+
         if (!GameManager.LevelQueued && GetCurrentScore() >= LevelData.getScore(CurrentLevel)) {
             GameManager.LevelQueued = true;
             Debug.Log("Level Passed!");
-            SpaceshipController spaceshipController = Spaceship.GetComponent<SpaceshipController>();
             spaceshipController.StartWarpDrive();
             Invoke("NextScene", 5.0f);
         }
+
+        if (!spaceshipController.IsAlive && !playerNeedsReset) {
+            Debug.Log("Player died... Warping!");
+            playerNeedsReset = true;
+            spaceshipController.moving = false;
+            foreach (GameObject gameObject in GameManager.EnemyGameObjects.ToList()) {
+                if (gameObject == null) {
+                    continue;
+                }
+                MonoBehaviour monoBehaviour = gameObject.GetComponent<MonoBehaviour>();
+                if (monoBehaviour is Enemy) {
+                    gameObject.SetActive(false);
+                }
+            }
+            spaceshipController.StartWarpDrive();
+            Invoke("ShowDeathScreen", 2.5f);
+        }
+    }
+
+    void ShowDeathScreen() {
+        Spaceship.GetComponent<SpaceshipController>().ShowDeathScreen();
     }
 
     public int GetCurrentScore() {
@@ -205,6 +239,13 @@ public class GameManager : MonoBehaviour {
         // Post load
         BulletPool spaceshipBulletPool = spaceship.GetComponent<BulletPool>();
         spaceshipBulletPool.ReadyPool();
+    }
+
+    public void ReloadScene() {
+        SceneManager.LoadScene(0);
+        Destroy(GameManager.Spaceship);
+        instance.Invoke("SceneFadeIn", 1.0f);
+        Destroy(GameManager.instance);
     }
 
     bool CheckOutOfBounds(Transform transform) {
@@ -231,18 +272,16 @@ public class GameManager : MonoBehaviour {
         return CheckSpawnable(script.transform);
     }
 
-    public static void LoadMainGameClick()
-    {
-        SteamVR_Fade.View(new Color(0, 0, 0), 1.0f);
+    public static void LoadMainGameClick() {
+        //SteamVR_Fade.View(new Color(0, 0, 0), 1.0f);
         EnemyGameObjects = new List<GameObject>();
         GameManager.CurrentLevelScore = new List<int>();
         GameManager.levelQueued = false;
         GameManager.CurrentLevel = GameManager.CurrentLevel + 1;
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
-        instance.Invoke("SceneFadeIn", 1.0f);
+        //Invoke("SceneFadeIn", 1.0f);
     }
-    private void SceneFadeIn()
-    {
+    public void SceneFadeIn() {
         SteamVR_Fade.View(Color.clear, 1.0f);
     }
 }

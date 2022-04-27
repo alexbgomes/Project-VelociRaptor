@@ -59,9 +59,8 @@ public class VRUIInput : MonoBehaviour
             {
                 if (hit.collider.gameObject.CompareTag("StartButton"))
                 {
-                    Destroy(cameraRig);
+                    //Destroy(cameraRig);
                     GameManager.LoadMainGameClick();
-                 
                 }
             }
         }

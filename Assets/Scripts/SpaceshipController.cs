@@ -20,6 +20,9 @@ public class SpaceshipController : MonoBehaviour {
     public int HP {
         get { return health; }
     }
+    public bool IsAlive {
+        get { return health != 0; }
+    }
     int shield;
     public int maxShield;
     public float shieldGateDuration = 3.0f;
@@ -39,6 +42,9 @@ public class SpaceshipController : MonoBehaviour {
     private int oldScore = 0;
     private int tempScore = 0;
     private Coroutine scoreCoroutine;
+    public GameObject deathTextGameObject;
+    public GameObject crosshairGameObject;
+    public bool enableTriggerReset = false;
     public bool TEST = false;
     
     void Start() {
@@ -69,6 +75,8 @@ public class SpaceshipController : MonoBehaviour {
         scoreText = interiorParentGameObject.transform
                         .Find("CockpitEquipments_Screens/CockpitEquipments_Screen-1/Score_Canvas/Score_Text")
                         .GetComponent<TextMeshProUGUI>();
+        deathTextGameObject = transform.Find("HUD/HUDCanvas/Canvas Layer 3").gameObject;
+        crosshairGameObject = transform.Find("HUD/HUDCanvas/Canvas Layer 4").gameObject;
     }
 
     void Update() {
@@ -265,6 +273,12 @@ public class SpaceshipController : MonoBehaviour {
             Debug.Log("Error invoking haptics, are controllers active?");
         }
         StartCoroutine(LerpSkyboxExposure(3.0f));
+    }
+
+    public void ShowDeathScreen() {
+        deathTextGameObject.SetActive(true);
+        crosshairGameObject.SetActive(false);
+        enableTriggerReset = true;
     }
 
     public IEnumerator LerpSkyboxExposure(float duration) {

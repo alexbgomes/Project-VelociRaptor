@@ -14,6 +14,7 @@ public class PlayerController : MonoBehaviour {
     public Interactable grabbedObject;
     private bool pinchPressedDown = false;
     private bool gripPressedDown = false;
+    public bool pinchReset = false;
 
     public Vector3 TransformOffsetPosition {
         get {
@@ -50,6 +51,10 @@ public class PlayerController : MonoBehaviour {
 
     void OnPinchDown(SteamVR_Action_Boolean action, SteamVR_Input_Sources source) {
         pinchPressedDown = true;
+        if (pinchReset) {
+            pinchReset = false;
+            GameManager.Instance.ReloadScene();
+        }
         if (grabbedObject is Interactable) {
             grabbedObject.OnPinchDown();
         }
@@ -135,5 +140,6 @@ public class PlayerController : MonoBehaviour {
         if (!gripPressedDown && grabbedObject) {
             grabbedObject.Unbind();
         }
+        pinchReset = GameManager.Spaceship.GetComponent<SpaceshipController>().enableTriggerReset;
     }
 }
