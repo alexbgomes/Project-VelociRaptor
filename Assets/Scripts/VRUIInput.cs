@@ -9,6 +9,7 @@ public class VRUIInput : MonoBehaviour
     public SteamVR_Action_Boolean TriggerOn;
 
     public SteamVR_Input_Sources handType;
+    public GameObject cameraRig;
     private LineRenderer laserLine;
     private Transform handPosition;
 
@@ -30,20 +31,27 @@ public class VRUIInput : MonoBehaviour
 
     public void TriggerHold(SteamVR_Action_Boolean fromAction, SteamVR_Input_Sources fromSource)
     {
-        laserLine.positionCount = 2;
+        if(laserLine != null)
+        {
+            laserLine.positionCount = 2;
+
+        }
         hitCollider = true;
     }
 
     public void TriggerUp(SteamVR_Action_Boolean fromAction, SteamVR_Input_Sources fromSource)
     {
-        laserLine.positionCount = 0;
+        if (laserLine != null)
+        {
+            laserLine.positionCount = 0;
+        }
         hitCollider = false;
     }
 
 
     private void LateUpdate()
     {
-        if (hitCollider)
+        if (hitCollider && laserLine != null)
         {
             laserLine.SetPosition(0, handPosition.position);
             laserLine.SetPosition(1, handPosition.forward * scale + handPosition.position);
@@ -51,6 +59,7 @@ public class VRUIInput : MonoBehaviour
             {
                 if (hit.collider.gameObject.CompareTag("StartButton"))
                 {
+                    Destroy(cameraRig);
                     GameManager.LoadMainGameClick();
                  
                 }
