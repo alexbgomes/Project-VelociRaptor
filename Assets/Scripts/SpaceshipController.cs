@@ -281,6 +281,15 @@ public class SpaceshipController : MonoBehaviour {
         enableTriggerReset = true;
     }
 
+    public void ShowWinScreen()
+    {
+        deathTextGameObject.transform.Find("Canvas/Header").GetComponent<TextMeshProUGUI>().text = "You have defeated the galatic enemies";
+        deathTextGameObject.transform.Find("Canvas/Body").GetComponent<TextMeshProUGUI>().text = "Earth is indebt to you and your heroism.";
+        deathTextGameObject.SetActive(true);
+        crosshairGameObject.SetActive(false);
+        enableTriggerReset = true;
+    }
+
     public IEnumerator LerpSkyboxExposure(float duration) {
         float elapsed = 0.0f;
         Material skyboxMaterial = Instantiate(RenderSettings.skybox);

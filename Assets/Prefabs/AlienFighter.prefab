@@ -160,7 +160,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 194f2bf5c8b00244e8d3ccb3fcc5eb49, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  trackingRate: 8
+  trackingRate: 3
   shootingRange: 100
   fireRate: 2
   trackPlayer: 1
@@ -181,8 +181,8 @@ MonoBehaviour:
   poolTarget: {fileID: 15369895981501399, guid: 7545762c6e6896c46a159577c54dc396, type: 3}
   poolCount: 3
   spawnSource: {fileID: 4612771481280503527}
-  bulletSpeed: 0.5
-  bulletDamage: 2
+  bulletSpeed: 0.75
+  bulletDamage: 10
 --- !u!54 &4644680434633579607
 Rigidbody:
   m_ObjectHideFlags: 0
