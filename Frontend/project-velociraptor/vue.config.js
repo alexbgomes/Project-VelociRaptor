@@ -1,3 +1,3 @@
 module.exports = {
-    publicPath: '/project-velociraptor/'
+    publicPath: '/Project-VelociRaptor/'
 }
