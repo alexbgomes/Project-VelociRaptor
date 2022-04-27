@@ -1,5 +1,6 @@
 using RengeGames.HealthBars;
 using System.Collections;
+using TMPro;
 using UnityEngine;
 
 public class SpaceshipController : MonoBehaviour {
@@ -19,6 +20,9 @@ public class SpaceshipController : MonoBehaviour {
     public int HP {
         get { return health; }
     }
+    public bool IsAlive {
+        get { return health != 0; }
+    }
     int shield;
     public int maxShield;
     public float shieldGateDuration = 3.0f;
@@ -34,7 +38,13 @@ public class SpaceshipController : MonoBehaviour {
     private GameObject warpDrive;
     private PlayerController leftController;
     private PlayerController rightController;
-
+    public TextMeshProUGUI scoreText;
+    private int oldScore = 0;
+    private int tempScore = 0;
+    private Coroutine scoreCoroutine;
+    public GameObject deathTextGameObject;
+    public GameObject crosshairGameObject;
+    public bool enableTriggerReset = false;
     public bool TEST = false;
     
     void Start() {
@@ -62,7 +72,11 @@ public class SpaceshipController : MonoBehaviour {
                         .Find("CockpitEquipments_Gauge2/CockpitEquipments_Gauge2-Screen/HP_Canvas/RadialSegmentedHealthBarImage")
                         .GetComponent<UltimateCircularHealthBar>();
         healthBar.SetSegmentCount(maxHealth);
-
+        scoreText = interiorParentGameObject.transform
+                        .Find("CockpitEquipments_Screens/CockpitEquipments_Screen-1/Score_Canvas/Score_Text")
+                        .GetComponent<TextMeshProUGUI>();
+        deathTextGameObject = transform.Find("HUD/HUDCanvas/Canvas Layer 3").gameObject;
+        crosshairGameObject = transform.Find("HUD/HUDCanvas/Canvas Layer 4").gameObject;
     }
 
     void Update() {
@@ -71,6 +85,7 @@ public class SpaceshipController : MonoBehaviour {
             TEST = false;
             StartWarpDrive();
         }
+        UpdateScore();
     }
 
     void UpdateMovement() {
@@ -260,6 +275,21 @@ public class SpaceshipController : MonoBehaviour {
         StartCoroutine(LerpSkyboxExposure(3.0f));
     }
 
+    public void ShowDeathScreen() {
+        deathTextGameObject.SetActive(true);
+        crosshairGameObject.SetActive(false);
+        enableTriggerReset = true;
+    }
+
+    public void ShowWinScreen()
+    {
+        deathTextGameObject.transform.Find("Canvas/Header").GetComponent<TextMeshProUGUI>().text = "You have defeated the galatic enemies";
+        deathTextGameObject.transform.Find("Canvas/Body").GetComponent<TextMeshProUGUI>().text = "Earth is indebt to you and your heroism.";
+        deathTextGameObject.SetActive(true);
+        crosshairGameObject.SetActive(false);
+        enableTriggerReset = true;
+    }
+
     public IEnumerator LerpSkyboxExposure(float duration) {
         float elapsed = 0.0f;
         Material skyboxMaterial = Instantiate(RenderSettings.skybox);
@@ -282,6 +312,34 @@ public class SpaceshipController : MonoBehaviour {
         }
         skyboxMaterial.SetColor("_Tint", Color.black);
         RenderSettings.skybox = skyboxMaterial;
+        yield return null;
+    }
+
+    public void UpdateScore() {
+        if (oldScore != GameManager.Instance.GetCurrentScore()) {
+            if (scoreCoroutine is null) {
+                Debug.Log("First score");
+                scoreCoroutine = StartCoroutine(LerpScore(0.5f));
+            } else {
+                Debug.Log("Subsequent score");
+                StopCoroutine(scoreCoroutine);
+                scoreCoroutine = StartCoroutine(LerpScore(0.5f));
+            }
+        }
+    }
+
+    IEnumerator LerpScore(float duration) {
+        int newScore = GameManager.Instance.GetCurrentScore();
+        oldScore = newScore;
+        float elapsed = 0.0f;
+        while (elapsed < duration) {
+            tempScore = (int)Mathf.Lerp((float)tempScore, (float)newScore, elapsed / duration);
+            Debug.Log($"Score={tempScore}");
+            scoreText.text = tempScore.ToString("00000");
+            elapsed += Time.deltaTime;
+            yield return null;
+        }
+        scoreText.text = GameManager.Instance.GetCurrentScore().ToString("00000");
         yield return null;
     }
 }

@@ -8,6 +8,7 @@ public class Alien : Enemy {
     public bool trackPlayer = true;
     private bool canShoot = true;
     private BulletPool bulletPool;
+    private AudioSource bulletSound;
     DissolveShaderController dissolveShaderController;
     public bool TEST;
     
@@ -16,6 +17,7 @@ public class Alien : Enemy {
         ScoreValue = 100;
         bulletPool = GetComponent<BulletPool>();
         dissolveShaderController = GetComponent<DissolveShaderController>();
+        bulletSound = GetComponent<AudioSource>();
         base.Start();
         List<Drop> dropTable = new List<Drop> { 
             new Drop { PickupType=PickupType.Shield, Chance=0.14f, Value=25 },
@@ -65,7 +67,9 @@ public class Alien : Enemy {
 
         float t = trackingRate * Time.deltaTime;
         t = t * t * (3.0f - 2.0f * t);
-        position.x = Mathf.Lerp(position.x, GameManager.Spaceship.transform.position.x, t);
+        Vector3 trackingVector = GameManager.Spaceship.transform.position;
+        trackingVector.z = position.z;
+        position = Vector3.Lerp(position, trackingVector, t);
 
         // Prevent enemies from going inside each other
         Collider collider = GetComponent<Collider>();
@@ -100,6 +104,7 @@ public class Alien : Enemy {
             }
             Bullet bullet = bulletObject.GetComponent<Bullet>();
             bullet.Incept();
+            bulletSound.Play();
             canShoot = false;
             Invoke("ResetShootingCooldown", fireRate);
         }

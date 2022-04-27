@@ -13,6 +13,8 @@ public class Destroyer : Enemy {
     public float laserDuration = 5.0f;
     public bool trackPlayer = true;
     private bool canShoot = true;
+    private AudioSource bulletSound;
+    public AudioSource laserSound;
     private bool canLaser = false;
     private BulletPool bulletPool;
     DissolveShaderController dissolveShaderController;
@@ -21,14 +23,14 @@ public class Destroyer : Enemy {
     public bool TEST;
     
     public override void Start() {
-        MaxHP = 500;
+        MaxHP = 50;
         ScoreValue = 5000;
         bulletPool = GetComponent<BulletPool>();
         dissolveShaderController = GetComponent<DissolveShaderController>();
         base.Start();
+        bulletSound = GetComponent<AudioSource>();
         List<Drop> dropTable = new List<Drop> { };
         SetDropTable(dropTable);
-        Invoke("ResetLaserCooldown", laserCooldown);
         moving = GameManager.PlayerMoving;
         laserObject = transform.Find("DestroyerLaser").gameObject;
         volumetricLineBehavior = laserObject.GetComponent<VolumetricLineBehavior>();
@@ -60,6 +62,14 @@ public class Destroyer : Enemy {
         }
     }
 
+    void OnEnable() {
+        if (!ready) {
+            return;
+        }
+        Debug.Log($"{transform.name} enabled, starting laser cooldown.");
+        Invoke("ResetLaserCooldown", laserCooldown);
+    }
+
     public override void OnTriggerEnter(Collider other) {
         GameObject otherGameObject = other.gameObject;
         if (otherGameObject is null) {
@@ -85,7 +95,9 @@ public class Destroyer : Enemy {
 
         float t = trackingRate * Time.deltaTime;
         t = t * t * (3.0f - 2.0f * t);
-        position.x = Mathf.Lerp(position.x, GameManager.Spaceship.transform.position.x, t);
+        Vector3 trackingVector = GameManager.Spaceship.transform.position;
+        trackingVector.z = position.z;
+        position = Vector3.Lerp(position, trackingVector, t);
 
         // Prevent enemies from going inside each other
         Collider collider = GetComponent<Collider>();
@@ -120,6 +132,7 @@ public class Destroyer : Enemy {
             }
             Bullet bullet = bulletObject.GetComponent<Bullet>();
             bullet.Incept();
+            bulletSound.Play();
             canShoot = false;
             Invoke("ResetShootingCooldown", fireRate);
         }
@@ -137,6 +150,7 @@ public class Destroyer : Enemy {
         trackPlayer = false;
         canShoot = false;
         laserObject.SetActive(true);
+        laserSound.Play();
         while (elapsed < duration) {
             width = Mathf.Lerp(width, b, elapsed / duration);
             volumetricLineBehavior.LineWidth = width;

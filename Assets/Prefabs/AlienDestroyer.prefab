@@ -56,12 +56,13 @@ GameObject:
   - component: {fileID: 8527508343397584569}
   - component: {fileID: 8515722167885702315}
   - component: {fileID: 8505668436124724167}
+  - component: {fileID: 785642384477612627}
   - component: {fileID: 5517090607404348548}
   - component: {fileID: 7787637799873211888}
   - component: {fileID: 3865384848870475758}
   - component: {fileID: 2307623853432151350}
-  - component: {fileID: 785642384477612627}
   - component: {fileID: 2429680215820934880}
+  - component: {fileID: 7154253758929045268}
   m_Layer: 0
   m_Name: AlienDestroyer
   m_TagString: Untagged
@@ -136,6 +137,28 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!114 &785642384477612627
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8528689795482799121}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e29c1d2406cce43478d5f1aec21f2921, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  moving: 1
+  moveSpeed: 0.3
+  trackingRate: 4
+  shootingRange: 100
+  fireRate: 2
+  laserCooldown: 15
+  laserDuration: 5
+  trackPlayer: 1
+  laserSound: {fileID: 0}
+  TEST: 0
 --- !u!114 &5517090607404348548
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -190,26 +213,6 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 0.53992814, y: 0.742192, z: 3.591423}
   m_Center: {x: -2.027508, y: -0.32628283, z: 8.911205}
---- !u!114 &785642384477612627
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8528689795482799121}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e29c1d2406cce43478d5f1aec21f2921, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  moving: 1
-  moveSpeed: 0.3
-  trackingRate: 4
-  shootingRange: 100
-  fireRate: 2
-  laserCooldown: 15
-  trackPlayer: 1
-  TEST: 0
 --- !u!114 &2429680215820934880
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -228,6 +231,102 @@ MonoBehaviour:
   spawnSource: {fileID: 2111901372204066473}
   bulletSpeed: 2
   bulletDamage: 10
+--- !u!82 &7154253758929045268
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8528689795482799121}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 0}
+  m_audioClip: {fileID: 8300000, guid: 1c807b6ba8fb9544d9c02bf47d9ce979, type: 3}
+  m_PlayOnAwake: 1
+  m_Volume: 1
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!1001 &2092158790227606567
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -303,7 +402,8 @@ PrefabInstance:
       propertyPath: m_Intensity
       value: 8
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 818470411924732707, guid: aa85efa6b4bf002449ce94a3a3459b3e, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: aa85efa6b4bf002449ce94a3a3459b3e, type: 3}
 --- !u!4 &8130854572513617163 stripped
 Transform:

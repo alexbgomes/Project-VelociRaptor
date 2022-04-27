@@ -2,11 +2,12 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-
+using Valve.VR;
 public class GameManager : MonoBehaviour {
     static GameManager instance;
     static List<GameObject> enemyGameObjects;
 
+    static GameObject destroyer;
     static GameObject spaceship;
     public static GameObject pickupShieldPrefab;
     public static GameObject pickupInvulPrefab;
@@ -14,6 +15,7 @@ public class GameManager : MonoBehaviour {
     public static Material skyboxMaterial;
     public static float PlayerMovespeed;
     public static bool PlayerMoving;
+    public static bool playerNeedsReset;
     public static GameObject Spaceship {
         get {
             return spaceship;
@@ -39,7 +41,7 @@ public class GameManager : MonoBehaviour {
         }
     }
 
-    static int currentLevel = 1;
+    static int currentLevel = 0;
     public static int CurrentLevel {
         get {
             return currentLevel;
@@ -86,6 +88,12 @@ public class GameManager : MonoBehaviour {
         }
     }
 
+    public static float MaxZToPlayerForSpawn {
+        get {
+            return 150.0f;
+        }
+    }
+
     public static GameManager Instance {
         get {
             if (!instance) {
@@ -108,15 +116,20 @@ public class GameManager : MonoBehaviour {
             GameManager.CurrentLevel = saveData.CurrentLevel;
         }
 
-
         GameManager.EnemyGameObjects = new List<GameObject>();
         GameManager.CurrentLevelScore = new List<int>();
-        GameManager.Spaceship = GameObject.Find("Spaceship");
 
-        GameManager.LoadResources();
+        if (SceneManager.GetActiveScene().buildIndex != 0)
+        {
+            GameManager.Spaceship = GameObject.Find("Spaceship");
+            destroyer = GameObject.Find("AlienDestroyer");
+            GameManager.LoadResources();
 
-        GameManager.PlayerMovespeed = GameManager.Spaceship.GetComponent<SpaceshipController>().moveSpeed;
-        GameManager.PlayerMoving = GameManager.Spaceship.GetComponent<SpaceshipController>().moving;
+            GameManager.PlayerMovespeed = GameManager.Spaceship.GetComponent<SpaceshipController>().moveSpeed;
+            GameManager.PlayerMoving = GameManager.Spaceship.GetComponent<SpaceshipController>().moving;
+            playerNeedsReset = false;
+        }
+        
 
         DontDestroyOnLoad(GameObject.Find("GameManager"));
         Debug.Log("GameManager initialized.");
@@ -131,7 +144,21 @@ public class GameManager : MonoBehaviour {
     }
 
     void Update() {
+        SpaceshipController spaceshipController;
+        if (GameManager.Spaceship != null) {
+            spaceshipController = GameManager.Spaceship.GetComponent<SpaceshipController>();
+        } else {
+            spaceshipController = null;
+            return;
+        }
+        
         foreach (GameObject gameObject in GameManager.EnemyGameObjects.ToList()) { //ToList ensures mutation does not throw error
+            if (!spaceshipController.IsAlive) {
+                break;
+            }
+            if (gameObject == null) {
+                continue;
+            }
             MonoBehaviour monoBehaviour = gameObject.GetComponent<MonoBehaviour>();
             if (monoBehaviour is Enemy) {
                 if (monoBehaviour is PracticeTarget) {
@@ -149,8 +176,13 @@ public class GameManager : MonoBehaviour {
                     }
                 } else if (monoBehaviour is Enemy) {
                     Enemy enemy = (Enemy)monoBehaviour;
+
+                    if (CheckSpawnable(enemy) && !enemy.gameObject.activeInHierarchy) {
+                        enemy.gameObject.SetActive(true);
+                        Debug.Log($"GameManager has spawned {enemy.gameObject.name}...");
+                    }
+
                     if (CheckOutOfBounds(enemy)) {
-                        Debug.Log(enemy.transform.position.z - GameManager.Spaceship.transform.position.z);
                         Debug.Log($"{enemy.transform.name} is too far from player, killing without increasing score...");
                         enemy.TakeDamage(9999, GameManager.Instance.gameObject);
 
@@ -158,13 +190,52 @@ public class GameManager : MonoBehaviour {
                 }
             }
         }
-        if (!GameManager.LevelQueued && GameManager.CurrentLevelScore.Sum() >= LevelData.getScore(CurrentLevel)) {
+
+        if (!GameManager.LevelQueued && GetCurrentScore() >= LevelData.getScore(CurrentLevel)) {
             GameManager.LevelQueued = true;
             Debug.Log("Level Passed!");
-            SpaceshipController spaceshipController = Spaceship.GetComponent<SpaceshipController>();
             spaceshipController.StartWarpDrive();
             Invoke("NextScene", 5.0f);
         }
+
+        if (!spaceshipController.IsAlive && !playerNeedsReset) {
+            Debug.Log("Player died... Warping!");
+            playerNeedsReset = true;
+            spaceshipController.moving = false;
+            foreach (GameObject gameObject in GameManager.EnemyGameObjects.ToList()) {
+                if (gameObject == null) {
+                    continue;
+                }
+                MonoBehaviour monoBehaviour = gameObject.GetComponent<MonoBehaviour>();
+                if (monoBehaviour is Enemy) {
+                    gameObject.SetActive(false);
+                }
+            }
+            spaceshipController.StartWarpDrive();
+            Invoke("ShowDeathScreen", 2.5f);
+        }
+
+        if(spaceshipController.IsAlive && destroyer == null)
+        {
+            spaceshipController.StartWarpDrive();
+            Invoke("ShowWinScreen", 2.5f);
+        }
+    }
+
+    void ShowDeathScreen() {
+        Spaceship.GetComponent<SpaceshipController>().ShowDeathScreen();
+    }
+
+    void ShowWinScreen()
+    {
+        if (GameManager.Spaceship != null)
+        {
+            Spaceship.GetComponent<SpaceshipController>().ShowWinScreen();
+        }
+    }
+
+    public int GetCurrentScore() {
+        return GameManager.CurrentLevelScore.Sum();
     }
 
     void NextScene() {
@@ -185,6 +256,13 @@ public class GameManager : MonoBehaviour {
         spaceshipBulletPool.ReadyPool();
     }
 
+    public void ReloadScene() {
+        SceneManager.LoadScene(0);
+        Destroy(GameManager.Spaceship);
+        instance.Invoke("SceneFadeIn", 1.0f);
+        Destroy(GameManager.instance);
+    }
+
     bool CheckOutOfBounds(Transform transform) {
         return transform.position.z - GameManager.Spaceship.transform.position.z < MaxZAwayFromPlayer;
     }
@@ -197,5 +275,28 @@ public class GameManager : MonoBehaviour {
         return CheckOutOfBounds(script.transform);
     }
 
+    bool CheckSpawnable(Transform transform) {
+        return transform.position.z - GameManager.Spaceship.transform.position.z <= MaxZToPlayerForSpawn;
+    }
 
+    bool CheckSpawnable(GameObject gameObject) {
+        return CheckSpawnable(gameObject.transform);
+    }
+
+    bool CheckSpawnable(MonoBehaviour script) {
+        return CheckSpawnable(script.transform);
+    }
+
+    public static void LoadMainGameClick() {
+        //SteamVR_Fade.View(new Color(0, 0, 0), 1.0f);
+        EnemyGameObjects = new List<GameObject>();
+        GameManager.CurrentLevelScore = new List<int>();
+        GameManager.levelQueued = false;
+        GameManager.CurrentLevel = GameManager.CurrentLevel + 1;
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+        //Invoke("SceneFadeIn", 1.0f);
+    }
+    public void SceneFadeIn() {
+        SteamVR_Fade.View(Color.clear, 1.0f);
+    }
 }
