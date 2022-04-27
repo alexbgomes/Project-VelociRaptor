@@ -7,6 +7,7 @@ public class GameManager : MonoBehaviour {
     static GameManager instance;
     static List<GameObject> enemyGameObjects;
 
+    static GameObject destroyer;
     static GameObject spaceship;
     public static GameObject pickupShieldPrefab;
     public static GameObject pickupInvulPrefab;
@@ -121,7 +122,7 @@ public class GameManager : MonoBehaviour {
         if (SceneManager.GetActiveScene().buildIndex != 0)
         {
             GameManager.Spaceship = GameObject.Find("Spaceship");
-
+            destroyer = GameObject.Find("AlienDestroyer");
             GameManager.LoadResources();
 
             GameManager.PlayerMovespeed = GameManager.Spaceship.GetComponent<SpaceshipController>().moveSpeed;
@@ -213,10 +214,24 @@ public class GameManager : MonoBehaviour {
             spaceshipController.StartWarpDrive();
             Invoke("ShowDeathScreen", 2.5f);
         }
+
+        if(spaceshipController.IsAlive && destroyer == null)
+        {
+            spaceshipController.StartWarpDrive();
+            Invoke("ShowWinScreen", 2.5f);
+        }
     }
 
     void ShowDeathScreen() {
         Spaceship.GetComponent<SpaceshipController>().ShowDeathScreen();
+    }
+
+    void ShowWinScreen()
+    {
+        if (GameManager.Spaceship != null)
+        {
+            Spaceship.GetComponent<SpaceshipController>().ShowWinScreen();
+        }
     }
 
     public int GetCurrentScore() {
