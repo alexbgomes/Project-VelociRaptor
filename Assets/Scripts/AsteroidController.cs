@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class AsteroidController : MonoBehaviour
 {
-    public float moveSpeed = 0.3f;
+    private float moveSpeed = 0.2f;
     // Start is called before the first frame update
     void Start()
     {

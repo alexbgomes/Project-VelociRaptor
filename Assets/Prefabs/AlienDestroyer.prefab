@@ -157,6 +157,7 @@ MonoBehaviour:
   laserCooldown: 15
   laserDuration: 5
   trackPlayer: 1
+  laserSound: {fileID: 0}
   TEST: 0
 --- !u!114 &5517090607404348548
 MonoBehaviour:
@@ -401,7 +402,8 @@ PrefabInstance:
       propertyPath: m_Intensity
       value: 8
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 818470411924732707, guid: aa85efa6b4bf002449ce94a3a3459b3e, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: aa85efa6b4bf002449ce94a3a3459b3e, type: 3}
 --- !u!4 &8130854572513617163 stripped
 Transform:
